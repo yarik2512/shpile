@@ -14,5 +14,5 @@ cur = con.cursor()
 # into.import_kvds_new(con, cur)
 # into.update_kvds_in_students(con, cur)
 
-into.import_subjects(con, cur)
+# into.import_subjects(con, cur)
 con.close()
