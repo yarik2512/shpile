@@ -222,7 +222,14 @@ def import_subjects(con, cur):
         data = csv.DictReader(r_file, delimiter=';')
         for row in data:
             subject = row['\ufeffПредмет']
+
             teacher = row['Преподаватель']
+            # узнаем id учителя
+            cur.execute(
+                f"SELECT id FROM teachers WHERE name='{teacher}'"
+            )
+            id_teacher = cur.fetchone()[0]
+
             course = int(row['Класс'])
             year = 2020 if course == 10 else 2019
             direction = row['Профиль']
@@ -231,14 +238,23 @@ def import_subjects(con, cur):
                 cur.execute(
                     f"SELECT id FROM config WHERE abb='{direction}' and year={year}"
                 )
-                id = cur.fetchall()
-                print(id)
+                ids = cur.fetchall()
+                for elem in ids:
+                    cur.execute(
+                        "INSERT INTO subjects "
+                        f"VALUES (NULL, '{subject}', {id_teacher}, {elem[0]})"
+                    )
+                    con.commit()
             else:
                 cur.execute(
                     f"SELECT id FROM config WHERE abb='{direction}' and year={year} and id_subdirection={sub_direction}"
                 )
-                id = cur.fetchone()
-                print(id)
+                id = cur.fetchone()[0]
+                cur.execute(
+                    "INSERT INTO subjects "
+                    f"VALUES (NULL, '{subject}', {id_teacher}, {id})"
+                )
+                con.commit()
 
             # cur.execute(
             #    f"INSERT INTO subjects "
