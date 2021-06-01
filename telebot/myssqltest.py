@@ -15,4 +15,5 @@ cur = con.cursor()
 # into.update_kvds_in_students(con, cur)
 
 # into.import_subjects(con, cur)
+into.import_foreign_languages(con, cur)
 con.close()
