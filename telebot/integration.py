@@ -235,6 +235,7 @@ def import_subjects(con, cur):
             direction = row['Профиль']
             sub_direction = int(row['Подпрофиль'])
             if sub_direction == 0:
+                # случай, когда предмет у всего класса, то есть у нескольких профилей
                 cur.execute(
                     f"SELECT id FROM config WHERE abb='{direction}' and year={year}"
                 )
