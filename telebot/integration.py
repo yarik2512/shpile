@@ -107,116 +107,119 @@ def import_kvds_new(con, cur):
     for elem in result:
         print(elem, result[elem])
 
-    def import_kvds(con, cur):
-        """Функция import_kvds загружает информацию о курсах внеурочной деятельности гимназистов.
-        В начале формируется словарь, в котором ключ - название курса, значение - список id слушателей.
-        Первый элемент списка слушателей - преподаватель курса"""
 
-        # Словарь temp
-        temp = dict()
-        with open('tables/kvd.csv', encoding='utf-8') as r_file:
-            data = csv.DictReader(r_file, delimiter=';')
-            count = 0
-            for row in data:
-                if count == 0:
-                    for item in row:
-                        # формируем ключи и указываем первым элементом словаря - ведущего преподавателя
-                        if row[item] != 'tmp' and len(item) > 1:
-                            temp[item] = [row[item]]
-                else:
-                    for item in row:
-                        if item in temp and row[item] == '1':
-                            student = row['ФИО ученика'].split()
-                            if len(student) < 3:
-                                continue
-                            cur.execute(
-                                f"SELECT student_id FROM students WHERE surname='{student[0]}' and name='{student[1]}'"
-                            )
-                            id_student = cur.fetchone()
-                            if not (id_student is None):
-                                id_student = id_student[0]
-                            temp[item].append(id_student)
-                count += 1
+def import_kvds(con, cur):
+    """Функция import_kvds загружает информацию о курсах внеурочной деятельности гимназистов.
+    В начале формируется словарь, в котором ключ - название курса, значение - список id слушателей.
+    Первый элемент списка слушателей - преподаватель курса"""
 
-        for item in temp:
-            # случай, когда модуль ведут несколько преподавателей
-            for elem in temp[item][0].split('/'):
+    # Словарь temp
+    temp = dict()
+    with open('tables/kvd.csv', encoding='utf-8') as r_file:
+        data = csv.DictReader(r_file, delimiter=';')
+        count = 0
+        for row in data:
+            if count == 0:
+                for item in row:
+                    # формируем ключи и указываем первым элементом словаря - ведущего преподавателя
+                    if row[item] != 'tmp' and len(item) > 1:
+                        temp[item] = [row[item]]
+            else:
+                for item in row:
+                    if item in temp and row[item] == '1':
+                        student = row['ФИО ученика'].split()
+                        if len(student) < 3:
+                            continue
+                        cur.execute(
+                            f"SELECT student_id FROM students WHERE surname='{student[0]}' and name='{student[1]}'"
+                        )
+                        id_student = cur.fetchone()
+                        if not (id_student is None):
+                            id_student = id_student[0]
+                        temp[item].append(id_student)
+            count += 1
+
+    for item in temp:
+        # случай, когда модуль ведут несколько преподавателей
+        for elem in temp[item][0].split('/'):
+            cur.execute(
+                f"INSERT INTO kvds (name_kvd, teacher, students_id) "
+                f"VALUES ('{item}', '{elem}', '{';'.join(map(str, temp[item][1:]))}')"
+            )
+            con.commit()
+
+    # update_kvds_in_students(con, cur)
+
+
+def import_projects(con, cur):
+    """Функция импорта проектов, присвоения им номера, а также записи номера проекта в таблицу student"""
+    wb = load_workbook(filename='tables/projects.xlsx')
+    sheets = wb.sheetnames
+    temp = []
+    for sheet in sheets:
+        i = 2
+        while not (wb[sheet][f'A{i}'].value is None):
+            row = wb[sheet][f'A{i}:D{i}'][0]
+            student = row[1].value
+            project = row[3].value.strip()
+
+            if not (project in temp):
+                temp.append(project)
                 cur.execute(
-                    f"INSERT INTO kvds (name_kvd, teacher, students_id) "
-                    f"VALUES ('{item}', '{elem}', '{';'.join(map(str, temp[item][1:]))}')"
-                )
-                con.commit()
-
-        # update_kvds_in_students(con, cur)
-
-    def import_projects(con, cur):
-        """Функция импорта проектов, присвоения им номера, а также записи номера проекта в таблицу student"""
-        wb = load_workbook(filename='tables/projects.xlsx')
-        sheets = wb.sheetnames
-        temp = []
-        for sheet in sheets:
-            i = 2
-            while not (wb[sheet][f'A{i}'].value is None):
-                row = wb[sheet][f'A{i}:D{i}'][0]
-                student = row[1].value
-                project = row[3].value.strip()
-
-                if not (project in temp):
-                    temp.append(project)
-                    cur.execute(
-                        "INSERT INTO projects "
-                        f"VALUES (NULL, '{project.strip()}', 0, 'NULL')"
-                    )
-
-                id_project = temp.index(project) + 1
-                id_student = functions.get_student_id(cur, student)
-                print(student)
-                functions.enrollment_project(con, cur, id_project, id_student)
-                i += 1
-        wb.close()
-
-    def import_students(con, cur):
-        """Функция import_students добавляет в БД контингент гимназистов. Данные берутся из таблицы students.csv"""
-        lng = {
-            'Английский язык': 'en', 'Немецкий язык': 'ge',
-            'Французский язык': 'fr', 'Китайский язык': 'ch',
-            'Испанский язык': 'sp', 'Итальянский язык': 'it'
-        }
-        # читаем таблицу
-        with open('tables/students.csv', encoding='utf-8') as file:
-            data = csv.DictReader(file, delimiter=';')
-
-            for row in data:
-                fullname = row['ФИО'].strip()
-                surname, name, last_name = row['ФИО'].split()
-                tmp = row['Подпрофиль'].split()
-                course = int(tmp[0])
-
-                year = 2020 if course == 10 else 2019
-                # отлавливаем 8 и 9 классы
-                if course > 9:
-                    print(tmp)
-                    direction, sub_direction = tmp[1].split('-')[0], int(tmp[1][-1])
-                    print(direction, sub_direction)
-                    cur.execute(
-                        f"SELECT id FROM config WHERE abb='{direction}' and id_subdirection={sub_direction} and year={year}"
-                    )
-                    direct = cur.fetchall()[0][0]
-                    print(direct)
-                else:
-                    direct = 0
-
-                # информация о языковых группах
-                sec = lng[row['Второй ин. язык']]
-                languages = f"en{row['Подгруппа']}{sec}{row['гр.']}"
-
-                cur.execute(
-                    f"INSERT INTO students "
-                    f"VALUES (NULL, '{fullname}', '{surname}', '{name}', '{last_name}', {course}, '{direct}', "
-                    f"'{languages}', '', '')"
+                    "INSERT INTO projects "
+                    f"VALUES (NULL, '{project.strip()}', 0, 'NULL')"
                 )
 
-                con.commit()
+            id_project = temp.index(project) + 1
+            id_student = functions.get_student_id(cur, student)
+            print(student)
+            functions.enrollment_project(con, cur, id_project, id_student)
+            i += 1
+    wb.close()
+
+
+def import_students(con, cur):
+    """Функция import_students добавляет в БД контингент гимназистов. Данные берутся из таблицы students.csv"""
+    lng = {
+        'Английский язык': 'en', 'Немецкий язык': 'ge',
+        'Французский язык': 'fr', 'Китайский язык': 'ch',
+        'Испанский язык': 'sp', 'Итальянский язык': 'it'
+    }
+    # читаем таблицу
+    with open('tables/students.csv', encoding='utf-8') as file:
+        data = csv.DictReader(file, delimiter=';')
+
+        for row in data:
+            fullname = row['ФИО'].strip()
+            surname, name, last_name = row['ФИО'].split()
+            tmp = row['Подпрофиль'].split()
+            course = int(tmp[0])
+
+            year = 2020 if course == 10 else 2019
+            # отлавливаем 8 и 9 классы
+            if course > 9:
+                print(tmp)
+                direction, sub_direction = tmp[1].split('-')[0], int(tmp[1][-1])
+                print(direction, sub_direction)
+                cur.execute(
+                    f"SELECT id FROM config WHERE abb='{direction}' and id_subdirection={sub_direction} and year={year}"
+                )
+                direct = cur.fetchall()[0][0]
+                print(direct)
+            else:
+                direct = 0
+
+            # информация о языковых группах
+            sec = lng[row['Второй ин. язык']]
+            languages = f"en{row['Подгруппа']}{sec}{row['гр.']}"
+
+            cur.execute(
+                f"INSERT INTO students "
+                f"VALUES (NULL, '{fullname}', '{surname}', '{name}', '{last_name}', {course}, '{direct}', "
+                f"'{languages}', '', '')"
+            )
+
+            con.commit()
 
 
 def import_kvds_new_new(con, cur):
@@ -290,10 +293,10 @@ def update_students_kvds(con, cur):
                 kvd_id = cur.fetchone()[0]
                 cur.fetchall()
                 kvds.append(kvd_id)
-            n = chr(ord(n)+1)
+            n = chr(ord(n) + 1)
             if ord(n) > ord("Z"):
                 n = "A"
-                m = "A" if m == "" else chr(ord(m)+1)
+                m = "A" if m == "" else chr(ord(m) + 1)
         # print(kvds)
         kvds = ";".join(map(str, kvds))
         print(t[f"B{i}"].value, kvds)
