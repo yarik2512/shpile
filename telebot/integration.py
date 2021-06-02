@@ -219,6 +219,91 @@ def import_kvds_new(con, cur):
                 con.commit()
 
 
+def import_kvds_new_new(con, cur):
+    wb = load_workbook(filename='tables/kvd.xlsx')
+    sheet = wb.sheetnames[0]
+    kvds = dict()
+    i = ""
+    j = "F"
+    while not (wb[sheet][f"{i}{j}1"].value is None):
+        name = wb[sheet][f"{i}{j}1"].value
+        tmp = wb[sheet][f"{i}{j}2"].value.split('/')
+        teachers = list()
+        for teacher in tmp:
+            cur.execute(
+                f"SELECT id FROM teachers WHERE name='{teacher}'"
+            )
+            teachers.append(cur.fetchone()[0])
+        students = list()
+        k = 3
+        while not (wb[sheet][f"B{k}"].value is None):
+            if wb[sheet][f"{i}{j}{k}"].value == 1:
+                cur.execute(
+                    f"SELECT student_id FROM students WHERE fullname='{wb[sheet][f'B{k}'].value}'"
+                )
+                student = cur.fetchone()[0]
+                students.append(student)
+                # students.add(wb[sheet][f"B{k}"].value)
+            k += 1
+        kvds[name] = {'teachers': teachers, 'students': students}
+        j = chr(ord(j) + 1)
+        if ord(j) > ord("Z"):
+            j = "A"
+            i = "A" if i == "" else chr(ord(i) + 1)
+    # print(kvds)
+    for kvd in kvds:
+        print(kvd)
+        for item in kvds[kvd]:
+            print(item, ": ", kvds[kvd][item])
+    for kvd in kvds:
+        name = kvd
+        students = ";".join(map(str, kvds[name]['students']))
+        for teacher_id in kvds[name]['teachers']:
+            cur.execute(
+                f"SELECT name FROM teachers WHERE id='{teacher_id}'"
+            )
+            teacher = cur.fetchone()[0]
+            print(name, teacher_id, teacher, students)
+            cur.execute(
+                f"INSERT INTO kvds "
+                f"VALUES (NULL, '{name}', {teacher_id}, '{teacher}', '{students}')"
+            )
+            con.commit()
+
+
+def update_students_kvds(con, cur):
+    wb = load_workbook(filename='tables/kvd.xlsx')
+    sheet = wb.sheetnames[0]
+    t = wb[sheet]
+    i = 3
+    while not (t[f"B{i}"].value is None):
+        m = ""
+        n = "F"
+        kvds = list()
+        while not (t[f"{m}{n}1"].value is None):
+            # print(1)
+            if t[f"{m}{n}{i}"].value == 1:
+                kvd = t[f"{m}{n}1"].value
+                cur.execute(
+                    f"SELECT id_kvd FROM kvds WHERE name_kvd='{kvd}'"
+                )
+                kvd_id = cur.fetchone()[0]
+                cur.fetchall()
+                kvds.append(kvd_id)
+            n = chr(ord(n)+1)
+            if ord(n) > ord("Z"):
+                n = "A"
+                m = "A" if m == "" else chr(ord(m)+1)
+        # print(kvds)
+        kvds = ";".join(map(str, kvds))
+        print(t[f"B{i}"].value, kvds)
+        cur.execute(
+            f"UPDATE students SET kvds='{kvds}' WHERE fullname='{t[f'B{i}'].value}'"
+        )
+        con.commit()
+        i += 1
+
+
 def import_subjects(con, cur):
     """Функция import_subject загружает в БД информацию о всех предметах, кроме иностранных языков, включенных
     в расписание урок. Данные берутся из таблицу с расписанием. При формировании таблицы необходимо указывать номер
