@@ -38,8 +38,23 @@ def mentors(cur, student_id):
     slangt = cur.fetchone()[0]
     teachers.add(flangt)
     teachers.add(slangt)
-    print(flangt, slangt)
-
+    cur.execute(
+        f"SELECT kvds FROM students WHERE student_id='{student_id}'"
+    )
+    kvds = cur.fetchone()[0]
+    kvds = kvds.split(";")
+    for kvd in kvds:
+        cur.execute(
+            f"SELECT name_kvd FROM kvds WHERE id_kvd='{kvd}'"
+        )
+        name_kvd = cur.fetchone()[0]
+        cur.fetchall()
+        cur.execute(
+            f"SELECT teacher FROM kvds WHERE name_kvd='{name_kvd}'"
+        )
+        kvd_teachers = cur.fetchall()
+        for teacher in kvd_teachers:
+            teachers.add(teacher[0])
     return teachers
 
 
