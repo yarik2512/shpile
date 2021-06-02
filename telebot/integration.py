@@ -56,19 +56,24 @@ def import_curriculum(cur, data):
                 cur.connection.commit()
 
 
-def import_foreign_languages(cur):
+def import_foreign_languages(con, cur):
     """Функция import_foreign_languages отвечает за импорт данных о языковых группах в базу данных."""
     with open('tables/foreign_languages.csv', encoding='utf-8') as r_file:
         data = csv.DictReader(r_file, delimiter=';')
         for row in data:
             print(row)
             x = "\ufefflang"
+            teacher = row['teacher']
+            cur.execute(
+                f"SELECT id FROM teachers WHERE name='{teacher}'"
+            )
+            id_teacher = cur.fetchone()[0]
             cur.execute(
                 f"INSERT INTO foreign_languages "
-                f"VALUES (NULL, '{row[x]}', {int(row['n_group'])}, '{row['language']}', NULL, "
+                f"VALUES (NULL, '{row[x]}', {int(row['n_group'])}, '{row['language']}', {id_teacher}, "
                 f"'{row['teacher']}')"
             )
-            cur.connection.commit()
+            con.commit()
 
 
 def import_kvds_new(con, cur):
