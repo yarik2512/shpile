@@ -85,4 +85,12 @@ con = mysql.connector.connect(
 
 cursor = con.cursor()
 
-print(mentors(cursor, 4))
+for i in range(1, 17):
+    cursor.execute(
+        f"SELECT fullname FROM students WHERE student_id={i}"
+    )
+    print(cursor.fetchone()[0])
+    data = mentors(cursor, i)
+    for i in data:
+        print(i, data[i])
+    print('------')
