@@ -1,10 +1,12 @@
 import json
+from docxtpl import DocxTemplate
+import jinja2
+from mentors import mentors
 
 
-def create_data(file_id, student, dep, arr, reason, subjects):
+def create_data(student, dep, arr, reason, subjects):
     """
     Функция создания словаря из нужных данных
-    :param file_id: id бегунка
     :param student: имя ученика
     :param dep: дата отъезда
     :param arr: дата прибытия
@@ -13,14 +15,13 @@ def create_data(file_id, student, dep, arr, reason, subjects):
     :return: созданный словарь
     """
     data = dict()
-    data["id"] = file_id
     data["student"] = student
     data["dep"] = dep
     data["arr"] = arr
     data["reason"] = reason
     data["tasks"] = dict()
     for subject in subjects:
-        data["tasks"][subject.capitalize()] = ("", subjects[subject].capitalize())
+        data["tasks"][subject.capitalize()] = ("", subjects[subject])
     return data
 
 
@@ -56,3 +57,23 @@ def add_task(subject, task, path):
     data = json_to_data(path)
     data['tasks'][subject.capitalize()][0] = task.capitalize()
     data_to_json(data, path)
+
+
+def make_doc(data):
+    doc = DocxTemplate("docs/template.docx")
+    context = {
+        'name': data['student'],
+        'dep': data['dep'],
+        'arr': data['arr'],
+        'reason': data['reason'],
+        'tbl_contents': []
+    }
+    i = 0
+    for subject, task in data['tasks'].items():
+        context['tbl_contents'].append({'cols': [subject, task[0], task[1], "telgram-бот"]})
+        # context['tbl_contents'][i]['cols'] = [subject, task[0], task[1], "telgram-бот"]
+        i += 1
+    for item in context['tbl_contents']:
+        print(item)
+    doc.render(context)
+    doc.save("docs/output.docx")
