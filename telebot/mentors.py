@@ -28,7 +28,7 @@ def mentors(cur, student_id):
             f"SELECT name FROM teachers WHERE id='{teacher_id[0]}'"
         )
         teacher = cur.fetchone()[0]
-        teachers[teacher_id[1]] = teacher
+        teachers[teacher_id[1]] = f"{teachers[teacher_id[1]]}, {teacher}" if teacher_id[1] in teachers else teacher
 
     # узнаем преподавателей иностранных языко, сначала узнаем языки и группы у студента
     cur.execute(
@@ -73,6 +73,18 @@ def mentors(cur, student_id):
         )
         kvd_teachers = ', '.join([item[0] for item in cur.fetchall()])
         teachers[name_kvd] = kvd_teachers
+
+    # Получение информации по проекту
+    cur.execute(
+        f"SELECT project FROM students WHERE student_id='{student_id}'"
+    )
+    project_id = cur.fetchone()[0]
+    cur.execute(
+        f"SELECT name_project, project_manager FROM projects WHERE id_project='{project_id}'"
+    )
+    project = cur.fetchone()
+    teachers[f'Проект ({project[0]})'] = project[1]
+
     return teachers
 
 
@@ -84,5 +96,3 @@ con = mysql.connector.connect(
 )
 
 cursor = con.cursor()
-
-print(mentors(cursor, 4))
