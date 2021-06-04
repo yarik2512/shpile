@@ -4,6 +4,28 @@ from openpyxl import load_workbook
 import functions
 
 
+def import_curriculum_new(con, cur, files):
+    """Функция import_curriculum импортирует таблицы с учебными планами в БД.
+        - аргументы: con - подключение к БД, cur - курсор БД, files - список имён файлов с учебными планами;
+        - значение - нет."""
+    for file in files:
+        # загружаем учебный план
+        wb = load_workbook(filename=file)
+        year = int(file.split('.')[0][3:])
+        # получаем список листов в книге
+        sheets = wb.sheetnames
+        # проходим по листам
+        for sheet in sheets:
+            # узнаем id направления подготовки
+            abb, id_sub_direction = sheet.split('-')
+            cur.execute(
+                f"SELECT id FROM config WHERE abb={abb} and id_subdirection={id_sub_direction} and year={year}"
+            )
+            direction = cur.fetchone()[0]
+
+            # тут ещё много нужно чего написать
+
+
 def import_curriculum(cur, data):
     """Функция import_curriculum_to_db импортирует в БД словарь, представляющий собой учебный план."""
     for direct in data:
