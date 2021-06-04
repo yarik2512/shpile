@@ -1,5 +1,6 @@
 import json
 from docxtpl import DocxTemplate
+from docx import Document
 import jinja2
 from mentors import mentors
 
@@ -21,7 +22,7 @@ def create_data(student, dep, arr, reason, subjects):
     data["reason"] = reason
     data["tasks"] = dict()
     for subject in subjects:
-        data["tasks"][subject.capitalize()] = ("", subjects[subject])
+        data["tasks"][subject.capitalize()] = ("", subjects[subject], "")
     return data
 
 
@@ -46,16 +47,18 @@ def json_to_data(path):
     return data
 
 
-def add_task(subject, task, path):
+def add_task(subject, task, date, path):
     """
     Функция добавления задания
     :param subject: предмет
     :param task: задание
+    :param date: дата сдачи задания
     :param path: путь к json файлу
     """
     print(subject, task)
     data = json_to_data(path)
     data['tasks'][subject.capitalize()][0] = task.capitalize()
+    data['tasks'][subject.capitalize()][2] = date
     data_to_json(data, path)
 
 
@@ -70,7 +73,7 @@ def make_doc(data):
     }
     i = 0
     for subject, task in data['tasks'].items():
-        context['tbl_contents'].append({'cols': [subject, task[0], task[1], "telgram-бот"]})
+        context['tbl_contents'].append({'cols': [subject, task[0], task[1], task[2], "telgram-бот"]})
         # context['tbl_contents'][i]['cols'] = [subject, task[0], task[1], "telgram-бот"]
         i += 1
     for item in context['tbl_contents']:
