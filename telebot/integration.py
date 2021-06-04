@@ -329,6 +329,41 @@ def update_students_kvds(con, cur):
         i += 1
 
 
+def add_project_managers_to_teachers(con, cur):
+    cur.execute(
+        "SELECT project_manager FROM projects"
+    )
+    managers = cur.fetchall()
+    for manager in managers:
+        print(manager[0])
+        cur.execute(
+            f"SELECT * FROM teachers WHERE name='{manager[0]}'"
+        )
+        res = cur.fetchall()
+        if len(res) == 0:
+            cur.execute(
+                f"INSERT INTO teachers "
+                f"VALUES (NULL, '{manager[0]}', '', '', 111)"
+            )
+            con.commit()
+
+
+def update_project_managers_id(con, cur):
+    cur.execute(
+        f"SELECT project_manager FROM projects"
+    )
+    managers = cur.fetchall()
+    for manager in managers:
+        cur.execute(
+            f"SELECT id FROM teachers WHERE name='{manager[0]}'"
+        )
+        id_teacher = cur.fetchone()[0]
+        cur.execute(
+            f"UPDATE projects SET id_teacher='{id_teacher}' WHERE project_manager='{manager[0]}'"
+        )
+        con.commit()
+
+
 def import_subjects(con, cur):
     """Функция import_subject загружает в БД информацию о всех предметах, кроме иностранных языков, включенных
     в расписание урок. Данные берутся из таблицу с расписанием. При формировании таблицы необходимо указывать номер
