@@ -26,40 +26,69 @@ def create_data(student, dep, arr, reason, subjects):
     return data
 
 
-def data_to_json(data, path):
+def make_json(data, con, cur):
     """
     Функция записи в json файл
     :param data: словарь данных
-    :param path: путь к json файлу
+    :param con: mysql.connector
+    :param cur: con.cursor()
     """
-    with open(path, "w") as write_file:
-        json.dump(data, write_file)
+    name = data['student']
+    cur.execute(
+        f"SELECT student_id FROM students WHERE fullname='{name}'"
+    )
+    student_id = cur.fetchone()[0]
+    cur.execute(
+        f"INSERT INTO files "
+        f"VALUES (NULL, {student_id}, '{json.dumps(data)}'"
+    )
+    con.commit()
 
 
-def json_to_data(path):
+def update_json(data, runner_id, con, cur):
+    """
+    Функция изменения json в БД
+    :param data: словарь данных
+    :param runner_id: id бегунка
+    :param con: mysql.connector
+    :param cur: con.cursor()
+    """
+    cur.execute(
+        f"UPDATE files SET json='{json.dumps(data)}' WHERE id='{runner_id}'"
+    )
+    con.commit()
+
+
+def json_to_data(runner_id, con, cur):
     """
     Функция чтения json файла
-    :param path: путь к файлу
+    :param runner_id: id бегунка
+    :param con: mysql.connector
+    :param cur: con.cursor()
     :return: словарь из json объекта
     """
-    with open(path) as f:
-        data = json.load(f)
+    cur.execute(
+        f"SELECT json FROM files WHERE id='{runner_id}'"
+    )
+    data = cur.fetchone()[0]
     return data
 
 
-def add_task(subject, task, date, path):
+def add_task(subject, task, date, runner_id, con, cur):
     """
     Функция добавления задания
     :param subject: предмет
     :param task: задание
     :param date: дата сдачи задания
-    :param path: путь к json файлу
+    :param runner_id: id бегунка
+    :param con: mysql.connector
+    :param cur: con.cursor()
     """
     print(subject, task)
-    data = json_to_data(path)
+    data = json_to_data(runner_id, con, cur)
     data['tasks'][subject.capitalize()][0] = task.capitalize()
     data['tasks'][subject.capitalize()][2] = date
-    data_to_json(data, path)
+    update_json(data, runner_id, con, cur)
 
 
 def make_doc(data):
