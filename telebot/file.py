@@ -84,14 +84,14 @@ def add_task(subject, task, date, runner_id, con, cur):
     :param con: mysql.connector
     :param cur: con.cursor()
     """
-    print(subject, task)
     data = json_to_data(runner_id, con, cur)
     data['tasks'][subject.capitalize()][0] = task.capitalize()
     data['tasks'][subject.capitalize()][2] = date
     update_json(data, runner_id, con, cur)
 
 
-def make_doc(data):
+def make_doc(runner_id, con, cur):
+    data = json_to_data(runner_id, con, cur)
     doc = DocxTemplate("docs/template.docx")
     context = {
         'name': data['student'],
@@ -108,4 +108,4 @@ def make_doc(data):
     for item in context['tbl_contents']:
         print(item)
     doc.render(context)
-    doc.save("docs/output.docx")
+    doc.save(f"docs/runner_{runner_id}.docx")
