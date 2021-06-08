@@ -40,7 +40,7 @@ def make_json(data, con, cur):
     student_id = cur.fetchone()[0]
     cur.execute(
         f"INSERT INTO files "
-        f"VALUES (NULL, {student_id}, '{json.dumps(data)}'"
+        f"VALUES (NULL, {student_id}, '{json.dumps(data)}')"
     )
     con.commit()
 
