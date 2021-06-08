@@ -38,9 +38,16 @@ def make_json(data, con, cur):
         f"SELECT student_id FROM students WHERE fullname='{name}'"
     )
     student_id = cur.fetchone()[0]
+    json_data = json.dumps(data)
+    i = 0
+    for s in json_data:
+        if s == "\\":
+            json_data = json_data[:i] + '\\' + json_data[i:]
+            i += 1
+        i += 1
     cur.execute(
         f"INSERT INTO files "
-        f"VALUES (NULL, {student_id}, '{json.dumps(data)}')"
+        f"VALUES (NULL, {student_id}, '{json_data}')"
     )
     con.commit()
 
@@ -70,7 +77,7 @@ def json_to_data(runner_id, con, cur):
     cur.execute(
         f"SELECT json FROM files WHERE id='{runner_id}'"
     )
-    data = cur.fetchone()[0]
+    data = json.loads(cur.fetchone()[0])
     return data
 
 
