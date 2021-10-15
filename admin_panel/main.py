@@ -31,10 +31,9 @@ def log_in_function():
             dirs=folders
         )
     else:
-        flag = True
         return render_template(
             'admin.html',
-            flag=flag
+            flag=True
         )
 
 
