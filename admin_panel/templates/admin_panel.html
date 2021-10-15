@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+          crossorigin="anonymous">
+    <style>
+        .btn-group {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Панель администратора</h1>
+    <h3>Привет, {{ user }}</h3>
+
+    <form action="/action_with_dir/" method="post">
+        <div class="btn-group" role="group"
+             aria-label="Basic mixed styles example">
+            <button type="submit" class="btn btn-success"
+                    id="create" name="action" value="create">Создать
+            </button>
+            <button type="submit" class="btn btn-warning"
+                    id="open" name="action" value="open">Открыть
+            </button>
+            <button type="submit" class="btn btn-danger"
+                    id="delete" name="action" value="delete">Удалить
+            </button>
+        </div>
+        {% if flag_create %}
+            <div class="input-group mb-3">
+                <input type="text" class="form-control"
+                       placeholder="Введите имя папки"
+                       name="folder">
+                <button class="btn btn-outline-secondary" type="submit"
+                        id="ok" name="action" value="ok">OK
+                </button>
+            </div>
+        {% endif %}
+        <select class="form-select" multiple
+                aria-label="multiple select example" name="folder_names">
+            {% for item in dirs %}
+                <option value="{{ item }}">{{ item }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+</div>
+</body>
+</html>
