@@ -1,0 +1,25 @@
+{% extends 'test_editor.html' %}
+{% block content %}
+    <div class="container question multi">
+        <form action="/editor_checkbox/" method="post">
+            <div class="input-group">
+                <span class="input-group-text">Вопрос: </span>
+                <textarea class="form-control" aria-label="With textarea" name="question">{{ question }}</textarea>
+            </div>
+
+            {% for i in range(lenght) %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="{{ i }}-box" value="1"
+                           id="flexCheckDefault">
+                    <input type="text" class="form-control" name="{{ i }}" value="{{ answers[i][0] }}"
+                           style="width:60%;">
+                    <input type="number" class="form-control" name="{{ i }}-weight" value="{{ answers[i][1] }}"
+                           style="width: 10%;">
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary" name="action" value="add_answer">Добавить ответ</button>
+            <button type="submit" class="btn btn-danger" name="action" value="save">Сохранить</button>
+        </form>
+    </div>
+{% endblock %}
