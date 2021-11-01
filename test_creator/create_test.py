@@ -93,7 +93,7 @@ def func_4_radio():
         TEST[LAST_ID]['A'] = temp
         json_test = json.dumps(TEST)
         # update_tasks(USER, 'radio', json_test)
-        print(json_test)
+        print(TEST)
         return render_template(
             'one_chose_editor.html',
             question=TEST[LAST_ID]['Q'],
@@ -157,7 +157,9 @@ def add_new_question():  # надо придумать название функ
 
         TEST[LAST_ID]['A'] = temp
         json_test = json.dumps(TEST)
-        update_tasks(USER, 'multi', json_test)
+        TEMP = json.loads(json_test)
+        # update_tasks(USER, 'multi', json_test)
+        print(TEMP)
         print(json_test)
 
     elif 'close' in req:
