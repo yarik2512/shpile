@@ -172,6 +172,10 @@ def add_new_question():  # надо придумать название функ
         TEST[LAST_ID]['A'] = temp
         index = int(req.split('-')[1])
         TEST[LAST_ID]['A'].pop(index)
+    elif req == 'cls-editor':
+        return render_template(
+            'test_editor.html'
+        )
 
     return render_template(
         'multi_chose_editor.html',
