@@ -12,7 +12,7 @@ def update_tasks(user, type, task):
     cur = con.cursor()
 
     cur.execute(
-        f"INSERT INTO tasks (id, author, type, obj) VALUES (NULL, '{user}', '{type}', '{task}')"
+        f"INSERT INTO tasks ('author', 'type', 'obj') VALUES ('{user}', '{type}', '{task}')"
     )
 
     con.commit()
