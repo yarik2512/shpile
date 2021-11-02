@@ -32,4 +32,3 @@ def get_questions():
 
     print(cur.fetchall())
 
-get_questions()

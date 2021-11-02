@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import json
 from link import update_tasks
+import temp_file
 
 app = Flask(__name__)
 
@@ -12,9 +13,11 @@ LAST_ID = 0
 
 @app.route('/')
 def engine():
-    return render_template(
-        'test_editor.html'
-    )
+    return temp_file.engine(TEST)
+    # return render_template(
+    #     'test_editor.html',
+    #     obj=TEST
+    # )
 
 
 @app.route('/create_test/', methods=['POST'])
@@ -25,8 +28,10 @@ def function():  # надо придумать адекватное назван
     TEST[LAST_ID]['Q'] = ''
     TEST[LAST_ID]['A'] = [['', 0]]
     TEST[LAST_ID]['K'] = dict()
+
     if request.form['action'] == 'checkbox':
         TEST[LAST_ID]['type'] = 'multi'
+
         return render_template(
             'multi_chose_editor.html',
             question="",
@@ -123,6 +128,11 @@ def func_4_radio():
             answers=TEST[LAST_ID]['A'],
             point=int(point)
         )
+    elif req == 'cls-editor':
+        return render_template(
+            'test_editor.html',
+            obj=TEST
+        )
 
 
 @app.route("/editor_checkbox/", methods=['POST'])
@@ -174,7 +184,8 @@ def add_new_question():  # надо придумать название функ
         TEST[LAST_ID]['A'].pop(index)
     elif req == 'cls-editor':
         return render_template(
-            'test_editor.html'
+            'test_editor.html',
+            obj=TEST
         )
 
     return render_template(
