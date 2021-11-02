@@ -70,6 +70,20 @@ def action_with_dir():
             user=USER,
             dirs=folders
         )
+    elif request.form['action'] == 'open':
+        folder_name = request.form['folder_names']
+        if folder_name == 'назад':
+            folder_name = '../'
+        link_server.open_folder(folder_name)
+        folders = link_server.get_all_folders()
+        if link_server.cur_folder() != '/':
+            folders.append('назад')
+        return render_template(
+            'admin_panel.html',
+            flag_create=False,
+            user=USER,
+            dirs=folders
+        )
 
 
 app.run('127.0.0.1', 8080)

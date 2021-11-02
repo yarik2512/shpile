@@ -14,3 +14,11 @@ def remove_folder(folder_name):
 
 def get_all_folders():
     return list(filter(lambda x: not ('.' in x), ftp.nlst()))
+
+
+def open_folder(folder):
+    ftp.cwd('./'+folder)
+
+
+def cur_folder():
+    return ftp.pwd()
