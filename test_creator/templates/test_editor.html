@@ -18,11 +18,28 @@
             Здесь должно быть описание теста.
         </div>
         <div class="test-body">
-            <ol>
-                {% for item in obj %}
-                    <li>{{ obj[item]['Q'] }}</li>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">id</th>
+                    <th scope="col">Вопрос</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in obg %}
+                <tr>
+                    <th scope="row">Сюда номер </th>
+                    <td>Сюда id</td>
+                    <td>Формулировку вопроса</td>
+                    <td>Кнопка редактирования</td>
+                    <td>Кнопка удаления</td>
+                </tr>
                 {% endfor %}
-            </ol>
+                </tbody>
+            </table>
         </div>
         <div class="test-buttons">
             <div class="btn-group" role="group" aria-label="Basic example">

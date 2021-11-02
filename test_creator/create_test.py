@@ -96,9 +96,15 @@ def func_4_radio():
                 temp.append([answer, 0, False])
 
         TEST[LAST_ID]['A'] = temp
-        json_test = json.dumps(TEST)
+        json_test = json.dumps(TEST[LAST_ID])
         # update_tasks(USER, 'radio', json_test)
         print(TEST)
+
+        # TODO №1 Исправить функцию сборки вопроса: собираем json по
+        #  вопросу, и отправляем его в БД. В словарь TEST теперь должен быть
+        #  таким: {id_теста: номер, test_title: название теста (у нас оно
+        #  нигде не вводится), tasks: список id-вопросов.
+
         return render_template(
             'one_chose_editor.html',
             question=TEST[LAST_ID]['Q'],
