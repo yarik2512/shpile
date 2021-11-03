@@ -8,46 +8,35 @@ app = Flask(__name__)
 USER = 'admin'
 
 TEST = dict()
+TEST['tasks'] = []
 LAST_ID = 0
+TASK = dict()
 
 
 @app.route('/')
 def engine():
     return temp_file.engine(TEST)
-    # return render_template(
-    #     'test_editor.html',
-    #     obj=TEST
-    # )
 
 
 @app.route('/create_test/', methods=['POST'])
 def function():  # надо придумать адекватное название
-    global TEST, LAST_ID
-    LAST_ID = len(TEST) + 1
-    TEST[LAST_ID] = dict()
-    TEST[LAST_ID]['Q'] = ''
-    TEST[LAST_ID]['A'] = [['', 0]]
-    TEST[LAST_ID]['K'] = dict()
+    # global TEST, LAST_ID
+    # LAST_ID = len(TEST) + 1
+    # TEST[LAST_ID] = dict()
+    TASK['Q'] = ''
+    TASK['A'] = [['', 0]]
+    TASK['K'] = dict()
 
     if request.form['action'] == 'checkbox':
-        TEST[LAST_ID]['type'] = 'multi'
+        TASK['type'] = 'multi'
+        TASK['flag'] = 0
+        return temp_file.rendering_multiple_choice(TASK)
 
-        return render_template(
-            'multi_chose_editor.html',
-            question="",
-            lenght=0,
-            answers=[],
-            flag=False
-        )
     elif request.form['action'] == 'radio':
-        TEST[LAST_ID]['type'] = 'radio'
-        return render_template(
-            'one_chose_editor.html',
-            question="",
-            lenght=0,
-            answers=[],
-            point=0
-        )
+        TASK['type'] = 'radio'
+        TASK['point'] = 0
+        return temp_file.rendering_one_choice(TASK)
+    # TODO реализовать нажатие кнопки закрыть, упаковать тест и загрузить в БД
 
 
 # Реализация Виктора Швец
@@ -141,66 +130,22 @@ def func_4_radio():
         )
 
 
+#
+# @app.route("/close-editor-multi", methods=['POST'])
+# def close_editor_function():
+#     global TASK
+#     if request.form['action'] == 'close-with-save':
+#         TASK['flag'] = 3
+#         print(request.form)
+#         return temp_file.rendering_multiple_choice(TASK)
+#     elif request.form['action'] == 'close-without-save':
+#         TASK = {}
+#         return temp_file.engine(TEST)
+
+
 @app.route("/editor_checkbox/", methods=['POST'])
-def add_new_question():  # надо придумать название функции
-    global TEST, LAST_ID
-    flag = False
-    req = request.form['action']
-
-    if req == 'add_answer' and len(TEST[LAST_ID]['Q']) == 0:
-        question = request.form['question']
-        TEST[LAST_ID]['Q'] = question
-    elif req == 'add_answer':
-        temp = []
-        summa = 0
-        for i in range(len(TEST[LAST_ID]['A'])):
-            answer = request.form[f"{i}"]
-            weight = request.form[f"{i}-weight"]
-            right_answer = True if int(weight) > 0 else False
-            temp.append([answer, weight, right_answer])
-            summa += int(weight)
-        flag = True if summa != 100 else False
-        TEST[LAST_ID]['A'] = temp
-        TEST[LAST_ID]['A'].append(['', 0])
-    elif req == 'save':
-        temp = []
-        summa = 0
-        for i in range(len(TEST[LAST_ID]['A'])):
-            weight = request.form[f"{i}-weight"]
-            answer = request.form[f"{i}"]
-            right_answer = True if int(weight) > 0 else False
-            temp.append([answer, int(weight), right_answer])
-
-        TEST[LAST_ID]['A'] = temp
-        json_test = json.dumps(TEST)
-        TEMP = json.loads(json_test)
-        # update_tasks(USER, 'multi', json_test)
-        print(TEMP)
-        print(json_test)
-
-    elif 'close' in req:
-        temp = []
-        for i in range(len(TEST[LAST_ID]['A'])):
-            answer = request.form[f"{i}"]
-            weight = request.form[f"{i}-weight"]
-            right_answer = True if int(weight) > 0 else False
-            temp.append([answer, weight, right_answer])
-        TEST[LAST_ID]['A'] = temp
-        index = int(req.split('-')[1])
-        TEST[LAST_ID]['A'].pop(index)
-    elif req == 'cls-editor':
-        return render_template(
-            'test_editor.html',
-            obj=TEST
-        )
-
-    return render_template(
-        'multi_chose_editor.html',
-        question=TEST[LAST_ID]['Q'],
-        lenght=len(TEST[LAST_ID]['A']),
-        answers=TEST[LAST_ID]['A'],
-        flag=flag
-    )
+def edit_multiple_choice():
+    return temp_file.edit_multiple_choice(TEST, TASK, request)
 
 
 app.run('127.0.0.1', 8090, debug=True)
