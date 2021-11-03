@@ -29,11 +29,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for item in obg %}
+                {% for item in obj['tasks'] %}
                 <tr>
                     <th scope="row">Сюда номер </th>
                     <td>Сюда id</td>
-                    <td>Формулировку вопроса</td>
+                    <td>{{ item['Q']}}</td>
                     <td>Кнопка редактирования</td>
                     <td>Кнопка удаления</td>
                 </tr>

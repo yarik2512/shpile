@@ -7,13 +7,17 @@
           rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
           crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
 
 </head>
-<body>
+
 <div class="container">
     <h1>Редактор: множественный выбор</h1>
-    <div class="container question multi">
-        <form action="/editor_checkbox/" method="post">
+    <form action="/editor_checkbox/" method="post">
+        <div class="container question multi">
+
             <div class="input-group">
                 <span class="input-group-text">Вопрос: </span>
                 <textarea class="form-control" aria-label="With textarea"
@@ -34,11 +38,7 @@
                 </div>
             {% endfor %}
 
-            {% if flag %}
-                <div class="alert alert-danger" role="alert">
-                    Сумма баллов не равна 100!
-                </div>
-            {% endif %}
+
 
             <button type="submit" class="btn btn-primary" name="action"
                     value="add_answer">Добавить ответ
@@ -46,11 +46,73 @@
             <button type="submit" class="btn btn-danger" name="action"
                     value="save">Сохранить
             </button>
-            <button type="submit" class="btn btn-dark" name="action"
-                    value="cls-editor">Закрыть
-            </button>
-        </form>
-    </div>
+            {% if flag == 3 %}
+                <button type="submit" class="btn btn-dark" name="action"
+                        value="cls-editor">Закрыть
+                </button>
+            {% else %}
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-dark"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                    Закрыть
+                </button>
+            {% endif %}
+
+            {% if flag == 1 %}
+                <div class="alert alert-danger" role="alert">
+                    Вы не ввели текст вопроса!
+                </div>
+            {% elif flag == 2 %}
+                <div class="alert alert-danger" role="alert">
+                    Сумма баллов не равна 100!
+                </div>
+            {% elif flag == -1 %}
+                <div class="alert alert-danger" role="alert">
+                    Нажмите кнопку сохранить!
+                </div>
+            {% endif %}
+
+        </div>
+
+
+        <div class="modal fade"
+             id="exampleModal"
+             tabindex="-1"
+
+             aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"
+                            id="exampleModalLabel">Предупреждение</h5>
+                        <button type="button" class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Сохранить изменения?
+                    </div>
+                    <div class="modal-footer">
+
+
+                        <button type="submit" class="btn btn-secondary"
+                                data-bs-dismiss="modal" name="action"
+                                value="close-with-save">
+                            Да
+                        </button>
+                        <button type="submit" class="btn btn-primary"
+                                name="action" data-bs-dismiss="modal"
+                                value="close-without-save">
+                            Нет
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
+
 </body>
 </html>
