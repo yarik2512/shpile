@@ -31,7 +31,14 @@
             <button type="submit" class="btn btn-danger"
                     id="delete" name="action" value="delete">Удалить
             </button>
+            {% if flag_not_root %}
+                <button type="submit" class="btn btn-primary"
+                        id="back" name="action" value="back">Назад
+                </button>
+            {% endif %}
         </div>
+        <h4>Текущий путь: {{ path }}</h4>
+        <h4>Папки</h4>
         {% if flag_create %}
             <div class="input-group mb-3">
                 <input type="text" class="form-control"
@@ -44,8 +51,47 @@
         {% endif %}
         <select class="form-select" multiple
                 aria-label="multiple select example" name="folder_names">
+            <option value="" selected style="display: none;"></option>
             {% for item in dirs %}
                 <option value="{{ item }}">{{ item }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <form action="/action_with_files/" method="post">
+        <h4>Файлы</h4>
+        <div class="btn-group" role="group"
+             aria-label="Basic mixed styles example">
+            <button type="submit" class="btn btn-success"
+                    id="create" name="action" value="create">Создать
+            </button>
+            <button type="submit" class="btn btn-warning"
+                    id="open" name="action" value="open">Открыть
+            </button>
+            <button type="submit" class="btn btn-danger"
+                    id="delete" name="action" value="delete">Удалить
+            </button>
+            {% if flag_not_root %}
+                <button type="submit" class="btn btn-primary"
+                        id="back" name="action" value="back">Назад
+                </button>
+            {% endif %}
+        </div>
+        {% if flag_create %}
+            <div class="input-group mb-3">
+                <input type="file" class="form-control"
+                       placeholder="Загрузите файл"
+                       name="file">
+                <button class="btn btn-outline-secondary" type="submit"
+                        id="ok" name="action" value="ok">OK
+                </button>
+            </div>
+        {% endif %}
+        <select class="form-select" multiple
+                aria-label="multiple select example" name="file_names">
+            <option value="" selected style="display: none;"></option>
+            {% for item in files %}
+                <option value="{{ item }}">{{ item }} - {{ item }}</option>
             {% endfor %}
         </select>
     </form>
