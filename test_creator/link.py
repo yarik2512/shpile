@@ -1,4 +1,5 @@
 from mysql.connector import connect, Error
+
 con = connect(
     host='37.140.192.174',
     database='u1490660_default',
@@ -7,10 +8,12 @@ con = connect(
 )
 cur = con.cursor()
 
-def update_tasks(user, type, task):
+
+def insert_tasks(user, type, task):
     global con, cur
     cur.execute(
-        f"INSERT INTO tasks ('author', 'type', 'obj') VALUES ('{user}', '{type}', '{task}')"
+        f"INSERT INTO tasks (id, author, type, obj) "
+        f"VALUES (NULL, '{user}', '{type}', '{task}')"
     )
     con.commit()
 
@@ -27,4 +30,3 @@ def get_questions():
     global con, cur
     cur.execute("SELECT * FROM tasks")
     print(cur.fetchall())
-

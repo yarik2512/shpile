@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request
+from flask import render_template, request
 import json
+import link
 
 
 def engine(test):
@@ -26,8 +27,15 @@ def rendering_one_choice(task):
         question=task['Q'],
         lenght=len(task['A']) - 1,
         answers=task['A'],
-        point=task['point']
+        point=task['point'],
+        flag=task['flag']
     )
+
+
+def export_task_to_db(task):
+    task['A'] = task['A'][:-1]
+    json_obj = json.dumps(task)
+    link.insert_tasks('user', task['type'], json_obj)
 
 
 def edit_multiple_choice(test, task, req):
@@ -59,18 +67,16 @@ def edit_multiple_choice(test, task, req):
             task['A'][i][0] = answer
             task['A'][i][1] = weight
             summa += int(weight)
-        task['flag'] = 3
-        json_test = json.dumps(task)
+        task['flag'] = 2 if summa != 100 else 3
         print(task)
         if r == 'save':
             return rendering_multiple_choice(task)
         else:
             test['tasks'].append(task)
-            # TODO загрузить task в БД
+            export_task_to_db(task)
             return engine(test)
     elif r == 'close-without-save':
         return engine(test)
-
     elif r == 'cls-editor':
         if task['flag'] != 3:
             task['Q'] = req.form['question']
@@ -81,18 +87,74 @@ def edit_multiple_choice(test, task, req):
                 task['A'][i][1] = weight
             task['flag'] = -1
         test['tasks'].append(task)
-        # TODO загрузить task в БД
+        export_task_to_db(task)
         return engine(test)
     else:
-        # TODO проверить как работает удаление элементов из списка
-        temp = []
-        for i in range(len(task['A'])):
-            answer = request.form[f"{i}"]
-            weight = request.form[f"{i}-weight"]
-            right_answer = True if int(weight) > 0 else False
-            temp.append([answer, weight, right_answer])
-        task['A'] = temp
-        index = int(req.split('-')[1])
+        for i in range(len(task['A']) - 1):
+            answer = req.form[f"{i}"]
+            weight = req.form[f"{i}-weight"]
+            task['A'][i][0] = answer
+            task['A'][i][1] = weight
+        index = int(r.split('-')[1])
         task['A'].pop(index)
-
         return rendering_multiple_choice(task)
+
+
+def edit_one_choice(test, task, req):
+    r = req.form['action']
+    if r == 'add_answer' and not task['Q']:
+        if not req.form['question']:
+            task['flag'] = 1
+            return rendering_one_choice(task)
+        else:
+            task['Q'] = req.form['question']
+            task['A'].append(['', 0])
+            return rendering_one_choice(task)
+    elif r == 'add_answer' or r == 'save' or r == 'close-with-save':
+        task['point'] = int(req.form['right-answer'])
+        for i in range(len(task['A']) - 1):
+            task['A'][i][0] = req.form[f"{i}"]
+            if task['point'] == i:
+                task['A'][i][1] = 100
+            else:
+                task['A'][i][1] = 0
+        if r == 'add_answer':
+            task['A'].append(['', 0])
+        elif r == 'save':
+            task['flag'] = 3
+        else:
+            test['tasks'].append(task)
+            export_task_to_db(task)
+            return engine(test)
+        return rendering_one_choice(task)
+    elif r == 'close-without-save':
+        return engine(test)
+    elif r == 'cls-editor':
+        if task['flag'] != 3:
+            task['point'] = int(req.form['right-answer'])
+            task['Q'] = req.form['question']
+            for i in range(len(task['A']) - 1):
+                task['A'][i][0] = req.form[f"{i}"]
+                if task['point'] == i:
+                    task['A'][i][1] = 100
+                else:
+                    task['A'][i][1] = 0
+            task['flag'] = -1
+            return rendering_one_choice(task)
+        test['tasks'].append(task)
+        export_task_to_db(task)
+        return engine(test)
+    elif 'close' in r:
+        task['point'] = int(request.form['right-answer'])
+        for i in range(len(task['A']) - 1):
+            task['A'][i][0] = req.form[f"{i}"]
+            if task['point'] == i:
+                task['A'][i][1] = 100
+            else:
+                task['A'][i][1] = 0
+
+        index = int(r.split('-')[1])
+        if index == int(task['point']):
+            task['point'] = 0
+        task['A'].pop(index)
+        return rendering_one_choice(task)
