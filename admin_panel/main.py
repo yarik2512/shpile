@@ -101,6 +101,7 @@ def action_with_dir():
         folder_name = '../'
         link_server.open_folder(folder_name)
         folders = link_server.get_all_folders()
+        files = link_server.get_all_files()
         return render_template(
             'admin_panel.html',
             flag_not_root=True if link_server.cur_folder() != '/' else False,
@@ -128,8 +129,8 @@ def action_with_files():
             files=files
         )
     elif request.form['action'] == 'ok':
-        file_name = request.form['file']
-        link_server.add_file(file_name)
+        file = request.form['file']
+        link_server.add_file(file)
         folders = link_server.get_all_folders()
         return render_template(
             'admin_panel.html',

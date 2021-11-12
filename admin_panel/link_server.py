@@ -33,7 +33,7 @@ def get_all_files():
 
 
 def add_file(file):
-    ftp.sendcmd(f'STOR {file}')
+    ftp.storbinary(f'STOR abc.txt', file)
 
 
 def download_file(file_name):
