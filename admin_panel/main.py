@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request
+from werkzeug.utils import secure_filename
+
 import link_server
 
 app = Flask(__name__)
@@ -129,8 +131,8 @@ def action_with_files():
             files=files
         )
     elif request.form['action'] == 'ok':
-        file = request.form['file']
-        link_server.add_file(file)
+        file = request.files['file']
+        link_server.add_file(file, secure_filename(file.filename))
         folders = link_server.get_all_folders()
         return render_template(
             'admin_panel.html',
@@ -143,8 +145,8 @@ def action_with_files():
         )
     elif request.form['action'] == 'open':
         file_name = request.form['file_names']
-        # print(file_name)
-        print(link_server.download_file(file_name))
+        print(file_name)
+        print(link_server.download_file(file_name).filename)
         return render_template(
             'admin_panel.html',
             flag_not_root=True if link_server.cur_folder() != '/' else False,
