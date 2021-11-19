@@ -26,8 +26,6 @@ def sign_in():
     mail = request.form['email']
     password = request.form['password']
     role = request.form['role'] + 's'
-    print(mail)
-    print(role)
     cur.execute(
         f"SELECT * FROM `{role}`"
         f"WHERE mail = '{mail}' AND password = '{password}'"
