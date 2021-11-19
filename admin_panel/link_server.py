@@ -32,9 +32,12 @@ def get_all_files():
     return list(filter(lambda x: '.' in x and not (x[0] == '.'), ftp.nlst()))
 
 
-def add_file(file):
-    ftp.storbinary(f'STOR abc.txt', file)
+def add_file(file, filename):
+    ftp.storbinary(f'STOR {filename}', file)
 
 
 def download_file(file_name):
-    return ftp.sendcmd(f'RETR {file_name}')
+    f = open(file_name, "wb")
+    ftp.retrbinary(f'RETR {file_name}', f.write)
+    f.close()
+    return f
