@@ -32,8 +32,8 @@ while not (ws[f"A{row}"].value is None):
     groups = [id_groups[item.value] for item in ws[f"F{row}:ZZ{row}"][0] if not (item.value is None)]
     groups = ';'.join(map(str, groups))
     password = ''.join(sample(ascii_letters + digits, 8))
-    password = hashlib.md5(password.encode())
     ws[f"B{row}"] = password
+    password = hashlib.md5(password.encode())
     cur.execute(
         f"INSERT INTO students "
         f"VALUES (NULL, '{email}', '{fio}', '{password}', '{groups}')"
