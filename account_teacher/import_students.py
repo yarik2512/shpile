@@ -3,6 +3,7 @@ from openpyxl import load_workbook
 from string import ascii_letters, digits
 from random import sample
 from mysql.connector import connect, Error
+import hashlib
 
 con = connect(
     host='37.140.192.174',
@@ -13,6 +14,7 @@ con = connect(
 cur = con.cursor()
 
 cur.execute(
+
     f"SELECT * FROM `groups`"
 )
 gr = cur.fetchall()
@@ -30,6 +32,7 @@ while not (ws[f"A{row}"].value is None):
     groups = [id_groups[item.value] for item in ws[f"F{row}:ZZ{row}"][0] if not (item.value is None)]
     groups = ';'.join(map(str, groups))
     password = ''.join(sample(ascii_letters + digits, 8))
+    password = hashlib.md5(password.encode())
     ws[f"B{row}"] = password
     cur.execute(
         f"INSERT INTO students "
