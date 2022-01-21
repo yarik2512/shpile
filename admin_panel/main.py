@@ -2,11 +2,14 @@ from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
 
 import link_server
+import users
 
 app = Flask(__name__)
 
 USER = 'admin'
 PSWRD = 'admin123'
+user = ""
+pswrd = ""
 flag = False
 
 
@@ -20,6 +23,7 @@ def engine():
 
 @app.route('/login/', methods=['POST'])
 def log_in_function():
+    global user, pswrd
     user = request.form['user']
     pswrd = request.form['pass']
     if user == USER and pswrd == PSWRD:
@@ -31,6 +35,7 @@ def log_in_function():
             'admin_panel.html',
             flag_not_root=True if link_server.cur_folder() != '/' else False,
             flag_create=False,
+            is_teacher=users.is_teacher(USER),
             user=user,
             dirs=folders,
             path=link_server.cur_folder(),
@@ -45,6 +50,7 @@ def log_in_function():
 
 @app.route('/action_with_dir/', methods=['POST'])
 def action_with_dir():
+    global user, pswrd
     folders = link_server.get_all_folders()
     files = link_server.get_all_files()
 
@@ -53,6 +59,7 @@ def action_with_dir():
             'admin_panel.html',
             flag_not_root=True if link_server.cur_folder() != '/' else False,
             flag_create=True,
+            is_teacher=users.is_teacher(user),
             user=USER,
             dirs=folders,
             path=link_server.cur_folder(),
@@ -66,6 +73,7 @@ def action_with_dir():
             'admin_panel.html',
             flag_not_root=True if link_server.cur_folder() != '/' else False,
             flag_create=False,
+            is_teacher=users.is_teacher(user),
             user=USER,
             dirs=folders,
             path=link_server.cur_folder(),
@@ -80,6 +88,7 @@ def action_with_dir():
             'admin_panel.html',
             flag_not_root=True if link_server.cur_folder() != '/' else False,
             flag_create=False,
+            is_teacher=users.is_teacher(user),
             user=USER,
             dirs=folders,
             path=link_server.cur_folder(),
@@ -94,6 +103,7 @@ def action_with_dir():
             'admin_panel.html',
             flag_not_root=True if link_server.cur_folder() != '/' else False,
             flag_create=False,
+            is_teacher=users.is_teacher(user),
             user=USER,
             dirs=folders,
             path=link_server.cur_folder(),
@@ -108,6 +118,7 @@ def action_with_dir():
             'admin_panel.html',
             flag_not_root=True if link_server.cur_folder() != '/' else False,
             flag_create=False,
+            is_teacher=users.is_teacher(user),
             user=USER,
             dirs=folders,
             path=link_server.cur_folder(),
@@ -117,6 +128,7 @@ def action_with_dir():
 
 @app.route('/action_with_files/', methods=['POST'])
 def action_with_files():
+    global user, pswrd
     folders = link_server.get_all_folders()
     files = link_server.get_all_files()
 
@@ -125,6 +137,7 @@ def action_with_files():
             'admin_panel.html',
             flag_not_root=True if link_server.cur_folder() != '/' else False,
             flag_create=True,
+            is_teacher=users.is_teacher(user),
             user=USER,
             dirs=folders,
             path=link_server.cur_folder(),
@@ -138,6 +151,7 @@ def action_with_files():
             'admin_panel.html',
             flag_not_root=True if link_server.cur_folder() != '/' else False,
             flag_create=False,
+            is_teacher=users.is_teacher(user),
             user=USER,
             dirs=folders,
             path=link_server.cur_folder(),
@@ -146,11 +160,12 @@ def action_with_files():
     elif request.form['action'] == 'open':
         file_name = request.form['file_names']
         print(file_name)
-        print(link_server.download_file(file_name).filename)
+        link_server.download_file(file_name)
         return render_template(
             'admin_panel.html',
             flag_not_root=True if link_server.cur_folder() != '/' else False,
             flag_create=False,
+            is_teacher=users.is_teacher(user),
             user=USER,
             dirs=folders,
             path=link_server.cur_folder(),

@@ -1,3 +1,4 @@
+import os
 from ftplib import FTP
 
 ftp = FTP('server90.hosting.reg.ru', 'u1490660', passwd='Ds3Nb2d5wYj6UW28')
@@ -37,7 +38,11 @@ def add_file(file, filename):
 
 
 def download_file(file_name):
-    f = open(file_name, "wb")
-    ftp.retrbinary(f'RETR {file_name}', f.write)
-    f.close()
-    return f
+    print(os.getcwd())
+
+    with open(f'./{file_name}', 'wb+') as file:
+        ftp.retrbinary(f'RETR {file_name}', file.write)
+        file.close()
+    # print(file.read())
+
+    return file
