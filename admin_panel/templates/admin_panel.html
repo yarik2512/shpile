@@ -22,15 +22,19 @@
     <form action="/action_with_dir/" method="post">
         <div class="btn-group" role="group"
              aria-label="Basic mixed styles example">
+            {% if rights in "at" %}
             <button type="submit" class="btn btn-success"
                     id="create" name="action" value="create">Создать
             </button>
+            {% endif %}
             <button type="submit" class="btn btn-warning"
                     id="open" name="action" value="open">Открыть
             </button>
+            {% if rights in "at" %}
             <button type="submit" class="btn btn-danger"
                     id="delete" name="action" value="delete">Удалить
             </button>
+            {% endif %}
             {% if flag_not_root %}
                 <button type="submit" class="btn btn-primary"
                         id="back" name="action" value="back">Назад
@@ -39,7 +43,7 @@
         </div>
         <h4>Текущий путь: {{ path }}</h4>
         <h4>Папки</h4>
-        {% if flag_create %}
+        {% if flag_create and (is_teacher or is_admin) %}
             <div class="input-group mb-3">
                 <input type="text" class="form-control"
                        placeholder="Введите имя папки"
@@ -62,15 +66,19 @@
         <h4>Файлы</h4>
         <div class="btn-group" role="group"
              aria-label="Basic mixed styles example">
+            {% if rights in "at" %}
             <button type="submit" class="btn btn-success"
-                    id="create" name="action" value="create">Создать
+                    id="create" name="action" value="create">Загрузить
             </button>
+            {% endif %}
             <button type="submit" class="btn btn-warning"
-                    id="open" name="action" value="open">Открыть
+                    id="open" name="action" value="open">Скачать
             </button>
+            {% if rights in "at" %}
             <button type="submit" class="btn btn-danger"
                     id="delete" name="action" value="delete">Удалить
             </button>
+            {% endif %}
             {% if flag_not_root %}
                 <button type="submit" class="btn btn-primary"
                         id="back" name="action" value="back">Назад

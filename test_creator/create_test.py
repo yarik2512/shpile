@@ -45,4 +45,5 @@ def edit_multiple_choice():
     return temp_file.edit_multiple_choice(TEST, TASK, request)
 
 
-app.run('127.0.0.10', 8090, debug=True)
+if __name__ == '__main__':
+    app.run('127.0.0.10', 8090, debug=True)
