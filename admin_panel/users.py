@@ -9,9 +9,9 @@ con = connect(
 cur = con.cursor()
 
 
-def is_teacher(email):
+def is_teacher(user):
     global con, cur
     cur.execute(
-        f'SELECT * FROM `teachers` WHERE `mail` = "{email}"'
+        f'SELECT * FROM `teachers` WHERE `mail` = "{user}"'
     )
     return not(len(cur.fetchall()) == 0)
