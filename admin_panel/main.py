@@ -11,12 +11,14 @@ PSWRD = 'admin123'
 user = ""
 pswrd = ""
 flag = False
+rights = "t" if users.is_teacher(USER) else "s"
 
 
 @app.route('/')
 def engine():
     return render_template(
         'admin.html',
+        rights=rights,
         flag=flag
     )
 
@@ -39,11 +41,13 @@ def log_in_function():
             user=user,
             dirs=folders,
             path=link_server.cur_folder(),
+            rights=rights,
             files=files
         )
     else:
         return render_template(
             'admin.html',
+            rights=rights,
             flag=True
         )
 
@@ -63,6 +67,7 @@ def action_with_dir():
             user=USER,
             dirs=folders,
             path=link_server.cur_folder(),
+            rights=rights,
             files=files
         )
     elif request.form['action'] == 'ok':
@@ -77,6 +82,7 @@ def action_with_dir():
             user=USER,
             dirs=folders,
             path=link_server.cur_folder(),
+            rights=rights,
             files=files
         )
     elif request.form['action'] == 'delete':
@@ -92,6 +98,7 @@ def action_with_dir():
             user=USER,
             dirs=folders,
             path=link_server.cur_folder(),
+            rights=rights,
             files=files
         )
     elif request.form['action'] == 'open':
@@ -107,6 +114,7 @@ def action_with_dir():
             user=USER,
             dirs=folders,
             path=link_server.cur_folder(),
+            rights=rights,
             files=files
         )
     elif request.form['action'] == 'back':
@@ -122,6 +130,7 @@ def action_with_dir():
             user=USER,
             dirs=folders,
             path=link_server.cur_folder(),
+            rights=rights,
             files=files
         )
 
@@ -141,6 +150,7 @@ def action_with_files():
             user=USER,
             dirs=folders,
             path=link_server.cur_folder(),
+            rights=rights,
             files=files
         )
     elif request.form['action'] == 'ok':
@@ -155,6 +165,7 @@ def action_with_files():
             user=USER,
             dirs=folders,
             path=link_server.cur_folder(),
+            rights=rights,
             files=files
         )
     elif request.form['action'] == 'open':
@@ -169,6 +180,7 @@ def action_with_files():
             user=USER,
             dirs=folders,
             path=link_server.cur_folder(),
+            rights=rights,
             files=files
         )
 
