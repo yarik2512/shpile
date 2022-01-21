@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="u1490660_default@37.140.192.174" uuid="a7a93330-2737-41ac-9c1c-762686098793">
+    <data-source source="LOCAL" name="u1490660_default@37.140.192.174" uuid="6189b2c6-ce55-4e4e-b81e-26455939be94">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://37.140.192.174:3306/u1490660_default</jdbc-url>
+      <vm-options>&quot;-Djdk.tls.disabledAlgorithms=SSLv3, TLSv1, RC4, DES, MD5withRSA, DH keySize &lt; 1024, EC keySize &lt; 224, 3DES_EDE_CBC, anon, NULL, include jdk.disabled.namedCurves&quot;</vm-options>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

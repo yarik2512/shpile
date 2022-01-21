@@ -4,7 +4,7 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.10" jdkType="Python SDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyDocumentationSettings">
@@ -18,6 +18,8 @@
         <option value="$MODULE_DIR$/admin_panel/templates" />
         <option value="$MODULE_DIR$/test_creator/templates" />
         <option value="$MODULE_DIR$/account_teacher/templates" />
+        <option value="$MODULE_DIR$/course/templates" />
+        <option value="$MODULE_DIR$/course_editor/templates" />
       </list>
     </option>
   </component>
