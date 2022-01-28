@@ -3,7 +3,6 @@ from mysql.connector import connect, Error
 
 app = Flask(__name__)
 
-
 con = connect(
     host='37.140.192.174',
     database='u1490660_default',
@@ -30,15 +29,17 @@ def sign_in():
         f"SELECT * FROM `{role}`"
         f"WHERE mail = '{mail}' AND password = '{password}'"
     )
-    print(cur.fetchall())
+    res = cur.fetchall()
     con.commit()
-    return render_template(
-        'auth.html'
-    )
-
-
-
-
+    if len(res) == 0:
+        return render_template(
+            'auth.html'
+        )
+    else:
+        return render_template(
+            'user_account.html',
+            name=res[0][2]
+        )
 
 
 app.run('127.0.0.1', 8001, debug=True)
