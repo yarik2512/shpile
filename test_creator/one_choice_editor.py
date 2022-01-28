@@ -1,9 +1,14 @@
+import json
+
 from flask import Flask, request, render_template
+import db_functions
 
 app = Flask(__name__)
 
+USER = '15'
+
 item = {
-    'type': None,
+    'type': '',
     'question': '',
     'answers': []
 }
@@ -30,11 +35,18 @@ def create_one_choice_question():
         return upload_page()
     else:
         item['question'] = request.form['question']
+        total = 0
+        weight_count = 0
         for i in range(len(item['answers'])):
             text = request.form[f'answer-{i}']
-            weight = request.form[f'weight-{i}']
+            weight = int(request.form[f'weight-{i}'])
             item['answers'][i][0] = text
             item['answers'][i][1] = weight
+            total += weight
+            if weight != 0:
+                weight_count += 1
+
+        item['type'] = 'multi' if weight_count > 1 else 'one'
 
         if req == 'add':
             k = int(request.form['add-amount'])
@@ -59,7 +71,20 @@ def create_one_choice_question():
             return upload_page()
 
         if req == 'save':
-
+            db_functions.new_task(USER, item)
+            temp = db_functions.export_tasks_by_user(USER)
+            data = []
+            for element in temp:
+                smth = dict()
+                smth['id'] = element[0]
+                smth['type'] = element[2]
+                smth['question'] = element[3]
+                data.append(smth)
+            return render_template(
+                'questionsBank.html',
+                data=data,
+                length=len(data)
+            )
 
 
 if __name__ == '__main__':

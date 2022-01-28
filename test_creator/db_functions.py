@@ -1,4 +1,5 @@
 from mysql.connector import connect, Error
+import json
 
 con = connect(
     host='37.140.192.174',
@@ -7,3 +8,25 @@ con = connect(
     password='Ds3Nb2d5wYj6UW28'
 )
 cur = con.cursor()
+
+
+def new_task(user, obj):
+    author = user
+    typ = obj['type']
+    question = obj['question']
+    content = json.dumps(obj)
+    global con, cur
+    cur.execute(
+        f"INSERT INTO tasks (id, author, type, question, content) "
+        f"VALUES (NULL, '{author}', '{typ}', '{question}','{content}')"
+    )
+    con.commit()
+
+
+def export_tasks_by_user(user):
+    global con, cur
+    cur.execute(
+        f"SELECT * FROM tasks WHERE author='{user}'"
+    )
+    data = cur.fetchall()
+    return data
