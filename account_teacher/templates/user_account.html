@@ -10,7 +10,9 @@
 <div class="container">
     <h1>Личный кабинет: {{ name }}</h1>
     <form action="/manage-panel" method="post">
+        {% if teacher %}
         <button class="btn btn-primary" name="action" value="create-course">Создать курс</button>
+        {% endif %}
         <button class="btn btn-danger" name="action" value="close-account">Выйти</button>
     </form>
     <form action="/show-courses" method="post">

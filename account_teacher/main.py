@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 from mysql.connector import connect, Error
 
 app = Flask(__name__)
@@ -38,7 +38,8 @@ def sign_in():
     else:
         return render_template(
             'user_account.html',
-            name=res[0][2]
+            name=res[0][2],
+            teacher=(True if role == 'teachers' else False)
         )
 
 
