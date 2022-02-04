@@ -12,8 +12,46 @@
 </head>
 <body>
 <div class="container">
-    <h1>Ваш банк вопросов</h1>
-    <form action="/menage-tasks" method="post">
+    <form action="/questionBank" method="post">
+        <h1>Здесь будет ID-теста</h1>
+        <!-- Группа кнопок для окончания работы над тестом -->
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Название теста</span>
+            <input type="text" class="form-control" aria-label="for-title-test" name="titleTest">
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">ID вопроса</th>
+                <th scope="col">Тип</th>
+                <th scope="col">Вопрос</th>
+                <th scope="col">Действие</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in range(length) %}
+                <tr>
+                    <th scope="row">{{ i + 1 }}</th>
+                    <th scope="row">{{ data[i]['id'] }}</th>
+                    <td>{{ data[i]['type'] }}</td>
+                    <td>{{ data[i]['question'] }}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" name="action" value="open-{{ data[i]['id'] }}">
+                            Открыть
+                        </button>
+                        <button type="button" class="btn btn-danger" name="action" value="del-{{ data[i]['id'] }}">
+                            Удалить
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-secondary">Сохранить</button>
+
+        <h1>Ваш банк вопросов</h1>
+
         <table class="table">
             <thead>
             <tr>
