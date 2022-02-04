@@ -30,3 +30,11 @@ def export_tasks_by_user(user):
     )
     data = cur.fetchall()
     return data
+
+def export_tests_by_user(id):
+    global con, cur
+    cur.execute(
+        f"SELECT * FROM tests WHERE author='{id}'"
+    )
+    data = cur.fetchall()
+    return data
