@@ -11,9 +11,10 @@
 </head>
 <body>
 <div class="container">
-    <a class="btn btn-primary" style="margin-top:20px" href="#">Создать</a>
-    <h1>Список тестов</h1>
-    <form action="/manage-tests" method="post">
+    <form action="/test_panel" method="post">
+        <button class="btn btn-primary" style="margin-top:20px" name="action" value="createTest">Создать</button>
+        <h1>Список тестов</h1>
+
         <table class="table">
             <thead>
             <tr>

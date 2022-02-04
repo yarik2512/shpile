@@ -24,8 +24,8 @@ def show_questions_by_user(user_id):
 
 
 @app.route('/')
-def main():
-    bank_of_questions, length = show_questions_by_user('15')
+def main(ID):
+    bank_of_questions, length = show_questions_by_user(ID)
 
     return render_template(
         'questionsBank.html',
