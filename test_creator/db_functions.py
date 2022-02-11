@@ -39,3 +39,38 @@ def export_tests_by_user(id):
     )
     data = cur.fetchall()
     return data
+
+
+def materials_get_by_author(id_author):
+    global con, cur
+    cur.execute(
+        f"SELECT * FROM materials WHERE id_author='{id_author}'"
+    )
+    data = cur.fetchall()
+    return data
+
+
+def materials_get_by_discipline(discipline):
+    global con, cur
+    cur.execute(
+        f"SELECT * FROM materials WHERE discipline='{discipline}'"
+    )
+    data = cur.fetchall()
+    return data
+
+
+def materials_get_by_discipline_and_level(level, discipline):
+    global con, cur
+    cur.execute(
+        f"SELECT * FROM materials WHERE discipline='{discipline}' AND level='{level}'"
+    )
+    data = cur.fetchall()
+    return data
+
+
+def materials_update_status(status):
+    global con, cur
+    cur.execute(
+        f"UPDATE materials SET status='{status}'"
+    )
+
