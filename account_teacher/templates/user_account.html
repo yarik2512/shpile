@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>Личный кабинет: далее фамилия, имя и отчество учителя</h1>
+    <h1>Личный кабинет: {{ name }}</h1>
     <form action="/manage-panel" method="post">
         <button class="btn btn-primary" name="action" value="create-course">Создать курс</button>
         <button class="btn btn-danger" name="action" value="close-account">Выйти</button>
@@ -34,6 +34,34 @@
                 </td>
                 <td>Список групп</td>
             </tr>
+            </tbody>
+        </table>
+    </form>
+    <form action="/test_panel" method="post">
+        <button class="btn btn-primary" style="margin-top:20px" name="action" value="createTest">Создать тест</button>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Название</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in range(length) %}
+                <tr>
+                    <th scope="row">{{ data[i][0] }}</th>
+                    <td>{{ data[i][2] }}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" name="action" value="open-{{ data[i]['id'] }}">
+                            Открыть
+                        </button>
+                        <button type="button" class="btn btn-danger" name="action" value="del-{{ data[i]['id'] }}">
+                            Удалить
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
     </form>
