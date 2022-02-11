@@ -1,7 +1,9 @@
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template
 from mysql.connector import connect, Error
+import hashlib
 
 app = Flask(__name__)
+
 
 con = connect(
     host='37.140.192.174',
@@ -24,23 +26,24 @@ def sign_in():
     global con, cur
     mail = request.form['email']
     password = request.form['password']
+    password = hashlib.md5(password.encode())
     role = request.form['role'] + 's'
     cur.execute(
         f"SELECT * FROM `{role}`"
         f"WHERE mail = '{mail}' AND password = '{password}'"
     )
-    res = cur.fetchall()
+    student = cur.fetchall()
+    if len(student) == 0:
+        print(":(")
+
     con.commit()
-    if len(res) == 0:
-        return render_template(
-            'auth.html'
-        )
-    else:
-        return render_template(
-            'user_account.html',
-            name=res[0][2],
-            teacher=(True if role == 'teachers' else False)
-        )
+    return render_template(
+        'auth.html'
+    )
+
+
+
+
 
 
 app.run('127.0.0.1', 8001, debug=True)
