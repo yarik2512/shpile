@@ -20,6 +20,7 @@
         <option value="$MODULE_DIR$/account_teacher/templates" />
         <option value="$MODULE_DIR$/course/templates" />
         <option value="$MODULE_DIR$/course_editor/templates" />
+        <option value="$MODULE_DIR$/materials/templates" />
       </list>
     </option>
   </component>

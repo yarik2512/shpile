@@ -6,7 +6,6 @@ import db_functions
 
 app = Flask(__name__)
 
-
 ID = 1
 
 
@@ -34,4 +33,4 @@ def add_material():
     )
 
 
-app.run('127.0.0.1', 8080)
+app.run('127.0.0.1', 8080, debug=True)
