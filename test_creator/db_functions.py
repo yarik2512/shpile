@@ -73,4 +73,3 @@ def materials_update_status(status):
     cur.execute(
         f"UPDATE materials SET status='{status}'"
     )
-
