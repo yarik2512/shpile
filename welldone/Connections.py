@@ -9,7 +9,7 @@ def getConnectionDB():
         user='u1490660_default',
         password='Ds3Nb2d5wYj6UW28'
     )
-    return con.cursor()
+    return con
 
 
 def getFTP():
