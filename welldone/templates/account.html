@@ -26,21 +26,30 @@
             </div>
         </div>
     </div>
-
-    <div class="row justify-content-around">
-        <div class="col d-grid gap-2 mx-auto">
-            <button type="button" class="btn btn-primary">Добавить материал</button>
+    <form action="/actions" method="post">
+        <div class="row justify-content-around">
+            <div class="col d-grid gap-2 mx-auto">
+                <button type="submit" class="btn btn-primary" name="action" value="add-material">
+                    Добавить материал
+                </button>
+            </div>
+            <div class="col d-grid gap-2 mx-auto">
+                <button type="submit" class="btn btn-secondary" name="action" value="bank-of-materials">
+                    Банк материалов
+                </button>
+            </div>
+            <div class="col d-grid gap-2 mx-auto">
+                <button type="submit" class="btn btn-primary" name="action" value="add-task">
+                    Создать задание
+                </button>
+            </div>
+            <div class="col d-grid gap-2 mx-auto">
+                <button type="submit" class="btn btn-secondary" name="action" value="bank-of-tasks">
+                    Банк вопросов
+                </button>
+            </div>
         </div>
-        <div class="col d-grid gap-2 mx-auto">
-            <button type="button" class="btn btn-secondary">Банк материалов</button>
-        </div>
-        <div class="col d-grid gap-2 mx-auto">
-            <button type="button" class="btn btn-primary">Создать вопрос</button>
-        </div>
-        <div class="col d-grid gap-2 mx-auto">
-            <button type="button" class="btn btn-secondary">Банк вопросов</button>
-        </div>
-    </div>
+    </form>
 
     <!-- Отображение списка курсов, где пользователь автор -->
     <table class="table table-hover">
