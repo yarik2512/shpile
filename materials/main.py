@@ -11,8 +11,10 @@ ID = 1
 
 @app.route('/')
 def engine():
+    materials = db_functions.materials_get_by_author(ID)
     return render_template(
-        'add_materials.html'
+        'add_materials.html',
+        materials=materials
     )
 
 
@@ -26,10 +28,12 @@ def add_material():
     data['subject'] = request.form['subject']
     data['file'] = request.files['file']
     data['link'] = 'materials/' + data['level'] + '/' + data['subject'] + '/' + secure_filename(data['file'].filename)
-    # link_server.add_file(data['file'], '/www/shpile.space/' + data['link'])
+    link_server.add_file(data['file'], '/www/shpile.space/' + data['link'])
     db_functions.materials_add(data)
+    materials = db_functions.materials_get_by_author(ID)
     return render_template(
-        'add_materials.html'
+        'add_materials.html',
+        materials=materials
     )
 
 
