@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request
-import temp_file
+from flask import Flask, request
+from test_creator.py_archive import temp_file
 
 app = Flask(__name__)
 

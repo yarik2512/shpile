@@ -6,7 +6,7 @@ from create_test import app
 def create_checkbox_task(TASK):
     print('Привет!')
     return render_template(
-        'test_editor.html'
+        'archive/test_editor.html'
     )
 
 
@@ -58,12 +58,12 @@ def temo():
         TEST[LAST_ID]['A'].pop(index)
     elif req == 'cls-editor':
         return render_template(
-            'test_editor.html',
+            'archive/test_editor.html',
             obj=TEST
         )
 
     return render_template(
-        'multi_chose_editor.html',
+        'archive/multi_chose_editor.html',
         question=TEST[LAST_ID]['Q'],
         lenght=len(TEST[LAST_ID]['A']),
         answers=TEST[LAST_ID]['A'],

@@ -1,7 +1,6 @@
 # /questionBank
 
-from flask import Flask, render_template, request
-import temp_file
+from flask import Flask, render_template
 import db_functions
 
 app = Flask(__name__)
