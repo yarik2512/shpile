@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Модерация материалов</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <form action="/moderate-materials" method="post" class="mt-3">
+        <table class="table">
+            <tr>
+                <td>1</td>
+                <td>Название</td>
+                <td>Предмет</td>
+                <td><a href="#" target="_blank" class="btn btn-light">Посмотреть</a></td>
+                <td>
+                    <input type="submit" class="btn btn-light" name="accept-1" value="Принять">
+                    <input type="submit" class="btn btn-light" name="reject-1" value="Отклонить">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template
+import add_materials
 
 ID = 1
 
@@ -8,7 +9,8 @@ app = Flask(__name__)
 @app.route('/actions', methods=['POST'])
 def make_some_action():
     act = request.form['action']
-    print(act)
+    if act == 'add-material':
+        return add_materials.engine()
     return render_template(
         'account.html'
     )
