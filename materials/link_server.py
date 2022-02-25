@@ -9,6 +9,14 @@ def add_folder(folder_name):
     ftp.mkd(folder_name)
 
 
+def add_folder_to_path(path, folder_name):
+    try:
+        ftp.cwd(path)
+        ftp.mkd(folder_name)
+    except:
+        pass
+
+
 def remove_folder(folder_name):
     ftp.rmd(folder_name)
 
@@ -18,7 +26,7 @@ def get_all_folders():
 
 
 def open_folder(folder_name):
-    ftp.cwd('./'+folder_name)
+    ftp.cwd('./' + folder_name)
 
 
 def cur_folder():
