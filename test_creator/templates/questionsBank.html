@@ -13,45 +13,51 @@
 <body>
 <div class="container">
     <form action="/questionBank" method="post">
-        <h1>Здесь будет ID-теста</h1>
         <!-- Группа кнопок для окончания работы над тестом -->
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="inputGroup-sizing-default">Название теста</span>
-            <input type="text" class="form-control" aria-label="for-title-test" name="titleTest">
-        </div>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">ID вопроса</th>
-                <th scope="col">Тип</th>
-                <th scope="col">Вопрос</th>
-                <th scope="col">Действие</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for i in range(length) %}
+        {% if createTestFlag %}
+            <div class="alert alert-warning" role="alert">
+                Режим: создание тестирования. Выходите их режима только через нажатие кнопки "Сохранить и закрыть".
+            </div>
+
+            <h1>Вопросы теста</h1>
+            <table class="table">
                 <tr>
-                    <th scope="row">{{ i + 1 }}</th>
-                    <th scope="row">{{ data[i]['id'] }}</th>
-                    <td>{{ data[i]['type'] }}</td>
-                    <td>{{ data[i]['question'] }}</td>
-                    <td>
-                        <button type="button" class="btn btn-primary" name="action" value="open-{{ data[i]['id'] }}">
-                            Открыть
-                        </button>
-                        <button type="button" class="btn btn-danger" name="action" value="del-{{ data[i]['id'] }}">
-                            Удалить
-                        </button>
-                    </td>
+                    <th scope="col">ID вопроса</th>
+                    <th scope="col">Тип</th>
+                    <th scope="col">Вопрос</th>
+                    <th scope="col">Действие</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        <button type="button" class="btn btn-secondary">Сохранить</button>
+                {% for item in test %}
+                    <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td>
+                            <input class="form-control" type="text" placeholder="Введите вариант ответа"
+                                   aria-label="Label answer" name="answer-{{ i }}" value="{{ answers[i][0] }}">
+                        </td>
+                        <td>
+                            <input class="form-control" type="number" min="0" max="100"
+                                   aria-label="Label weight" name="weight-{{ i }}" value="{{ answers[i][1] }}">
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-danger" name="action" value="del-{{ i }}">Удалить
+                            </button>
+                            <button type="submit" class="btn btn-dark" name="action" value="up-{{ i }}">&#8593;
+                            </button>
+                            <button type="submit" class="btn btn-dark" name="action" value="down-{{ i }}">&#8595;
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
 
+
+            <button type="submit" class="btn btn-warning" name="action" value="end-create-test">Сохранить и закрыть
+            </button>
+        {% endif %}
         <h1>Ваш банк вопросов</h1>
-
+        {% if not(createTestFlag) %}
+            <button type="submit" class="btn btn-secondary" name="action" value="create-test">Создать тест</button>
+        {% endif %}
         <table class="table">
             <thead>
             <tr>
@@ -74,6 +80,11 @@
                         <button type="button" class="btn btn-danger" name="action" value="del-{{ data[i]['id'] }}">
                             Удалить
                         </button>
+                        {% if createTestFlag %}
+                            <button type="submit" class="btn btn-success" name="action" value="add-{{ data[i]['id'] }}">
+                                Добавить в тест
+                            </button>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

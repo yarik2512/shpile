@@ -6,14 +6,14 @@ import link
 def engine(test):
     print(test)
     return render_template(
-        'test_editor.html',
+        'archive/test_editor.html',
         obj=test
     )
 
 
 def rendering_multiple_choice(task):
     return render_template(
-        'multi_chose_editor.html',
+        'archive/multi_chose_editor.html',
         question=task['Q'],
         lenght=len(task['A']) - 1,
         answers=task['A'],
@@ -23,7 +23,7 @@ def rendering_multiple_choice(task):
 
 def rendering_one_choice(task):
     return render_template(
-        'one_chose_editor.html',
+        'archive/one_chose_editor.html',
         question=task['Q'],
         lenght=len(task['A']) - 1,
         answers=task['A'],

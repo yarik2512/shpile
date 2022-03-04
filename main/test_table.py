@@ -11,7 +11,7 @@ ID = 15
 def start():
     data = export_tests_by_user(ID)
     return render_template(
-        'test_panel.html',
+        'archive/test_panel.html',
         data=data,
         length=len(data)
     )

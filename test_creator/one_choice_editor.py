@@ -71,20 +71,24 @@ def create_one_choice_question():
             return upload_page()
 
         if req == 'save':
-            db_functions.new_task(USER, item)
-            temp = db_functions.export_tasks_by_user(USER)
-            data = []
-            for element in temp:
-                smth = dict()
-                smth['id'] = element[0]
-                smth['type'] = element[2]
-                smth['question'] = element[3]
-                data.append(smth)
-            return render_template(
-                'questionsBank.html',
-                data=data,
-                length=len(data)
-            )
+            return load_question_bank()
+
+
+def load_question_bank():
+    db_functions.new_task(USER, item)
+    temp = db_functions.export_tasks_by_user(USER)
+    data = []
+    for element in temp:
+        smth = dict()
+        smth['id'] = element[0]
+        smth['type'] = element[2]
+        smth['question'] = element[3]
+        data.append(smth)
+    return render_template(
+        'questionsBank.html',
+        data=data,
+        length=len(data)
+    )
 
 
 if __name__ == '__main__':
