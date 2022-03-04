@@ -12,7 +12,7 @@ ID = 1
 def engine():
     materials = db_functions.materials_get_by_author(ID)
     return render_template(
-        'add_materials.html',
+        'materials_add.html',
         materials=materials
     )
 
@@ -31,6 +31,6 @@ def add_material():
     db_functions.materials_add(data)
     materials = db_functions.materials_get_by_author(ID)
     return render_template(
-        'add_materials.html',
+        'materials_add.html',
         materials=materials
     )

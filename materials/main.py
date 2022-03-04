@@ -15,7 +15,7 @@ def engine():
     materials = db_functions.materials_get_by_status(1)
     materials = materials_functions.change_subject_to_ru(materials)
     return render_template(
-        'bank.html',
+        'materials_bank.html',
         materials=materials
     )
 
@@ -34,7 +34,7 @@ def materials_filter():
         materials = db_functions.materials_get_by_subject_level_status(subject, level, 1)
     materials = materials_functions.change_subject_to_ru(materials)
     return render_template(
-        'bank.html',
+        'materials_bank.html',
         materials=materials
     )
 
@@ -54,7 +54,7 @@ def add_material():
     db_functions.materials_add(data)
     materials = db_functions.materials_get_by_author(ID)
     return render_template(
-        'add_materials.html',
+        'materials_add.html',
         materials=materials
     )
 

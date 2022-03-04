@@ -50,19 +50,64 @@ def materials_get_by_author(id_author):
     return data
 
 
-def materials_get_by_discipline(discipline):
+def materials_get_by_subject(subject):
     global con, cur
     cur.execute(
-        f"SELECT * FROM materials WHERE subject='{discipline}'"
+        f"SELECT * FROM materials WHERE subject='{subject}'"
     )
     data = cur.fetchall()
     return data
 
 
-def materials_get_by_discipline_and_level(level, discipline):
+def materials_get_by_level(level):
     global con, cur
     cur.execute(
-        f"SELECT * FROM materials WHERE subject='{discipline}' AND level='{level}'"
+        f"SELECT * FROM materials WHERE level='{level}' AND level='{level}'"
+    )
+    data = cur.fetchall()
+    return data
+
+
+def materials_get_by_status(status):
+    global con, cur
+    cur.execute(
+        f"SELECT * FROM materials WHERE status='{status}'"
+    )
+    data = cur.fetchall()
+    return data
+
+
+def materials_get_by_subject_status(subject, status):
+    global con, cur
+    cur.execute(
+        f"SELECT * FROM materials WHERE subject='{subject}' AND status='{status}'"
+    )
+    data = cur.fetchall()
+    return data
+
+
+def materials_get_by_level_status(level, status):
+    global con, cur
+    cur.execute(
+        f"SELECT * FROM materials WHERE level='{level}' AND status='{status}'"
+    )
+    data = cur.fetchall()
+    return data
+
+
+def materials_get_by_subject_level(subject, level):
+    global con, cur
+    cur.execute(
+        f"SELECT * FROM materials WHERE subject='{subject}' AND level='{level}'"
+    )
+    data = cur.fetchall()
+    return data
+
+
+def materials_get_by_subject_level_status(subject, level, status):
+    global con, cur
+    cur.execute(
+        f"SELECT * FROM materials WHERE subject='{subject}' AND level='{level}' AND status='{status}'"
     )
     data = cur.fetchall()
     return data
