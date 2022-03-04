@@ -53,7 +53,7 @@ def materials_get_by_author(id_author):
 def materials_get_by_discipline(discipline):
     global con, cur
     cur.execute(
-        f"SELECT * FROM materials WHERE discipline='{discipline}'"
+        f"SELECT * FROM materials WHERE subject='{discipline}'"
     )
     data = cur.fetchall()
     return data
@@ -62,7 +62,7 @@ def materials_get_by_discipline(discipline):
 def materials_get_by_discipline_and_level(level, discipline):
     global con, cur
     cur.execute(
-        f"SELECT * FROM materials WHERE discipline='{discipline}' AND level='{level}'"
+        f"SELECT * FROM materials WHERE subject='{discipline}' AND level='{level}'"
     )
     data = cur.fetchall()
     return data
@@ -73,3 +73,12 @@ def materials_update_status(status):
     cur.execute(
         f"UPDATE materials SET status='{status}'"
     )
+
+
+def materials_add(data):
+    global con, cur
+    cur.execute(
+        f"INSERT INTO materials (id, id_author, title, level, subject, path, status) VALUES "
+        f"(NULL, '{data['author']}', '{data['name']}', '{data['level']}', '{data['discipline']}', '{data['link']}', 0)"
+    )
+    con.commit()

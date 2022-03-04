@@ -1,6 +1,7 @@
 import os
 from ftplib import FTP
 
+
 ftp = FTP('server90.hosting.reg.ru', 'u1490660', passwd='Ds3Nb2d5wYj6UW28')
 ftp.login(user='u1490660', passwd='Ds3Nb2d5wYj6UW28')
 
