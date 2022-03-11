@@ -2,17 +2,7 @@ from mysql.connector import connect
 from ftplib import FTP
 
 
-def get_con():
-    con = connect(
-        host='37.140.192.174',
-        database='u1490660_default',
-        user='u1490660_default',
-        password='Ds3Nb2d5wYj6UW28'
-    )
-    return con
-
-
-def get_cur():
+def get_con_cur():
     con = connect(
         host='37.140.192.174',
         database='u1490660_default',
@@ -20,7 +10,7 @@ def get_cur():
         password='Ds3Nb2d5wYj6UW28'
     )
     cur = con.cursor()
-    return cur
+    return con, cur
 
 
 def get_ftp():

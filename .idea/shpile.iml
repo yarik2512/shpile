@@ -22,6 +22,8 @@
         <option value="$MODULE_DIR$/course_editor/templates" />
         <option value="$MODULE_DIR$/materials/templates" />
         <option value="$MODULE_DIR$/welldone/templates" />
+        <option value="$MODULE_DIR$/welldone/account/templates" />
+        <option value="$MODULE_DIR$/welldone/materials/templates" />
       </list>
     </option>
   </component>

@@ -1,5 +1,5 @@
 import os
-from connections import get_ftp
+from welldone.connections import get_ftp
 
 ftp = get_ftp()
 

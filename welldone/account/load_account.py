@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
-import materials_add
+
+from welldone.materials import materials_add
 
 ID = 1
 
@@ -16,12 +17,7 @@ def make_some_action():
     )
 
 
-@app.route('/')
 def load_page_account():
     return render_template(
         'account.html'
     )
-
-
-if __name__ == '__main__':
-    app.run('127.0.0.1', 8080, debug=True)

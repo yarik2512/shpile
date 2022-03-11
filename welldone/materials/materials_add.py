@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
 
-import link_server
-import db_functions
+from welldone import link_server
+from welldone import db_functions
 
 app = Flask(__name__)
 

@@ -1,8 +1,7 @@
-from connections import get_con, get_cur
+from welldone.connections import get_con_cur
 import json
 
-con = get_con()
-cur = get_cur()
+con, cur = get_con_cur()
 
 
 def new_task(user, obj):
