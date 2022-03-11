@@ -1,4 +1,3 @@
-import requests
 from flask import Flask, request, render_template
 
 app = Flask(__name__)
@@ -26,4 +25,4 @@ def add_chapter():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

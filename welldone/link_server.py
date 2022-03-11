@@ -1,8 +1,7 @@
 import os
-from ftplib import FTP
+from connections import get_ftp
 
-ftp = FTP('server90.hosting.reg.ru', 'u1490660', passwd='Ds3Nb2d5wYj6UW28')
-ftp.login(user='u1490660', passwd='Ds3Nb2d5wYj6UW28')
+ftp = get_ftp()
 
 
 def add_folder(folder_name):
@@ -18,7 +17,7 @@ def get_all_folders():
 
 
 def open_folder(folder_name):
-    ftp.cwd('./'+folder_name)
+    ftp.cwd('./' + folder_name)
 
 
 def cur_folder():

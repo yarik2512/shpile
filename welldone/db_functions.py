@@ -1,13 +1,8 @@
-from mysql.connector import connect, Error
+from connections import get_con, get_cur
 import json
 
-con = connect(
-    host='37.140.192.174',
-    database='u1490660_default',
-    user='u1490660_default',
-    password='Ds3Nb2d5wYj6UW28'
-)
-cur = con.cursor()
+con = get_con()
+cur = get_cur()
 
 
 def new_task(user, obj):
