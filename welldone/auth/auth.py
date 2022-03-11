@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, session
 from welldone import connections
 from welldone.account import load_account
 
@@ -24,4 +24,5 @@ def sign_in():
         )
     USER = res[0][2]
     ID = res[0][0]
+    session['ID'] = ID
     return load_account.load_page_account()

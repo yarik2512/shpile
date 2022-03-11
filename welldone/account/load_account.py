@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, session
 
 from welldone.materials import materials_add
 from welldone.materials import materials_filter
@@ -15,11 +15,13 @@ def make_some_action():
     elif act == 'bank-of-materials':
         return materials_filter.engine()
     return render_template(
-        'account.html'
+        'account.html',
+        id=session['ID']
     )
 
 
 def load_page_account():
     return render_template(
-        'account.html'
+        'account.html',
+        id=session.get('ID')
     )

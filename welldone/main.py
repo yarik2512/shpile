@@ -4,6 +4,7 @@ from materials import materials_add, materials_filter
 from auth import auth
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = '123_123_123'
 
 
 @app.route('/')
