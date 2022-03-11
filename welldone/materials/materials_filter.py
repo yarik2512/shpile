@@ -1,16 +1,15 @@
 from flask import Flask, render_template, request
 
-import db_functions
-import materials_functions
+from welldone import db_functions
+from welldone.materials import materials_functions
 
 app = Flask(__name__)
 
 ID = 1
 
 
-@app.route('/')
 def engine():
-    materials = db_functions.materials_get_by_status(1)
+    materials = db_functions.materials_get_by_status(ID)
     materials = materials_functions.change_subject_to_ru(materials)
     return render_template(
         'materials_bank.html',
@@ -18,7 +17,6 @@ def engine():
     )
 
 
-@app.route('/materials-filter', methods=['POST'])
 def materials_filter():
     subject = request.form['subject']
     level = request.form['level']
@@ -35,6 +33,3 @@ def materials_filter():
         'materials_bank.html',
         materials=materials
     )
-
-
-app.run('127.0.0.1', 8080, debug=True)

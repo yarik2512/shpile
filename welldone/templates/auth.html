@@ -48,7 +48,13 @@
         <div class="alert alert-danger" role="alert">
             Пароли не совпадают!
         </div>
+    {% elif error == 2 %}
+        <div class="alert alert-danger" role="alert">
+            Ошибка авторизации
+        </div>
+
     {% endif %}
+
 </div>
 </body>
 </html>

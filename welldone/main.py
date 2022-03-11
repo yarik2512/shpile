@@ -1,13 +1,21 @@
-from flask import Flask
+from flask import Flask, render_template, session
 from account import load_account
-from materials import materials_add
+from materials import materials_add, materials_filter
+from auth import auth
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def function():  # переименовать функцию
-    return load_account.load_page_account()
+    return render_template(
+        'auth.html'
+    )
+
+
+@app.route('/sign-in', methods=['POST'])
+def authorization():
+    return auth.sign_in()
 
 
 @app.route('/actions', methods=['POST'])
@@ -18,6 +26,11 @@ def function_1():
 @app.route('/add_material', methods=['POST'])
 def add_material():
     return materials_add.add_material()
+
+
+@app.route('/materials-filter', methods=['POST'])
+def materials_filter_main():
+    return materials_filter.materials_filter()
 
 
 def main():
