@@ -1,12 +1,8 @@
 from mysql.connector import connect, Error
 import json
+import connections
 
-con = connect(
-    host='37.140.192.174',
-    database='u1490660_default',
-    user='u1490660_default',
-    password='Ds3Nb2d5wYj6UW28'
-)
+con = connections.get_connection_db()
 cur = con.cursor()
 
 
