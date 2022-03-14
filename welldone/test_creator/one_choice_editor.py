@@ -1,10 +1,5 @@
-import json
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, session
 from welldone import db_functions
-
-app = Flask(__name__)
-
-USER = '15'
 
 item = {
     'type': '',
@@ -13,8 +8,7 @@ item = {
 }
 
 
-@app.route('/')
-def upload_page(answers=0):
+def upload_page():
     return render_template(
         'test_creator_one_choice_editor.html',
         amount_answers=len(item['answers']),
@@ -23,7 +17,6 @@ def upload_page(answers=0):
     )
 
 
-@app.route('/editor-one-choice', methods=['POST'])
 def create_one_choice_question():
     req = request.form['action']
 
@@ -74,6 +67,7 @@ def create_one_choice_question():
 
 
 def load_question_bank():
+    USER = session.get('ID')
     db_functions.new_task(USER, item)
     temp = db_functions.export_tasks_by_user(USER)
     data = []
