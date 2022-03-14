@@ -1,14 +1,13 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 
 from welldone import db_functions
 from welldone.materials import materials_functions
 
 app = Flask(__name__)
 
-ID = 1
-
 
 def engine():
+    ID = session.get('ID')
     materials = db_functions.materials_get_by_status(ID)
     materials = materials_functions.change_subject_to_ru(materials)
     return render_template(
