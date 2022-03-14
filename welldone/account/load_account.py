@@ -1,7 +1,6 @@
 from flask import request, render_template, session
 
-from welldone.materials import materials_add
-from welldone.materials import materials_filter
+from welldone.materials import materials_add, materials_filter
 from welldone.test_creator import one_choice_editor
 
 

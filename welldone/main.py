@@ -41,7 +41,7 @@ def action_question_bank():
 
 
 def main():
-    app.run(debug=True)
+    app.run('80.78.241.153', 80, debug=True)
 
 
 if __name__ == '__main__':
