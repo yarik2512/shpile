@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,session
 from werkzeug.utils import secure_filename
 
 from welldone import link_server
@@ -6,7 +6,7 @@ from welldone import db_functions
 
 app = Flask(__name__)
 
-ID = 1
+ID = session.get('ID')
 
 
 def engine():
