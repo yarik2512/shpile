@@ -40,11 +40,6 @@ def action_question_bank():
     return load_questions_bank.action_question_bank()
 
 
-@app.route('/editor-one-choice', methods=['POST'])
-def create_one_choice_question():
-    return one_choice_editor.create_one_choice_question()
-
-
 def main():
     app.run(debug=True)
 
