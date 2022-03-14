@@ -17,7 +17,7 @@ def engine():
     )
 
 
-@app.route('/add_material', methods=['POST'])
+@app.route('/add-material', methods=['POST'])
 def add_material():
     global ID
     data = dict()

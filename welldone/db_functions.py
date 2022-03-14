@@ -4,6 +4,16 @@ import json
 con, cur = get_con_cur()
 
 
+def get_task_by_id(ind):
+    global con, cur
+    cur.execute(
+        f"SELECT * FROM tasks WHERE id={ind}"
+    )
+    data = cur.fetchone()
+    print(data)
+    return data
+
+
 def new_task(user, obj):
     author = user
     typ = obj['type']

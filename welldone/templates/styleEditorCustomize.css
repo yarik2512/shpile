@@ -1,0 +1,10 @@
+.mb-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 20px;
+}
+
+.mb-3 label, .mb-3 input {
+    margin: auto;
+}
+
