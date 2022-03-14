@@ -40,6 +40,11 @@ def action_question_bank():
     return load_questions_bank.action_question_bank()
 
 
+@app.route('/back', methods=['POST'])
+def back():
+    return load_account.load_page_account()
+
+
 def main():
     app.run('80.78.241.153', 80, debug=True)
 

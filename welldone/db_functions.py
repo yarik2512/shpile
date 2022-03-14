@@ -4,10 +4,10 @@ import json
 con, cur = get_con_cur()
 
 
-def get_task_by_id(ind):
+def get_task_by_id(id):
     global con, cur
     cur.execute(
-        f"SELECT * FROM tasks WHERE id={ind}"
+        f"SELECT * FROM tasks WHERE id={id}"
     )
     data = cur.fetchone()
     print(data)
