@@ -1,10 +1,8 @@
-from flask import Flask, request, render_template, session
+from flask import request, render_template, session
 
 from welldone.materials import materials_add
 from welldone.materials import materials_filter
 from welldone.test_creator import one_choice_editor
-
-app = Flask(__name__)
 
 
 def make_some_action():
