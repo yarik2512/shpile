@@ -3,12 +3,11 @@ from flask import Flask, request, render_template, session
 from welldone.materials import materials_add
 from welldone.materials import materials_filter
 
-ID = session.get('ID')
-
 app = Flask(__name__)
 
 
 def make_some_action():
+    ID = session.get('ID')
     act = request.form['action']
     if act == 'add-material':
         return materials_add.engine()
@@ -21,6 +20,7 @@ def make_some_action():
 
 
 def load_page_account():
+    ID = session.get('ID')
     return render_template(
         'account.html',
         id=ID

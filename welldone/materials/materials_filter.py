@@ -5,10 +5,9 @@ from welldone.materials import materials_functions
 
 app = Flask(__name__)
 
-ID = session.get('ID')
-
 
 def engine():
+    ID = session.get('ID')
     materials = db_functions.materials_get_by_status(ID)
     materials = materials_functions.change_subject_to_ru(materials)
     return render_template(

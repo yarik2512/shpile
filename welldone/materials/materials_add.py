@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request,session
+from flask import Flask, render_template, request, session
 from werkzeug.utils import secure_filename
 
 from welldone import link_server
@@ -6,10 +6,9 @@ from welldone import db_functions
 
 app = Flask(__name__)
 
-ID = session.get('ID')
-
 
 def engine():
+    ID = session.get('ID')
     materials = db_functions.materials_get_by_author(ID)
     return render_template(
         'materials_add.html',
@@ -19,7 +18,7 @@ def engine():
 
 @app.route('/add_material', methods=['POST'])
 def add_material():
-    global ID
+    ID = session.get('ID')
     data = dict()
     data['name'] = request.form['name']
     data['author'] = ID
