@@ -3,6 +3,7 @@ from account import load_account
 from materials import materials_add, materials_filter
 from auth import auth
 from test_creator import load_questions_bank, one_choice_editor
+from courses import course_creator
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '123_123_123'
@@ -45,8 +46,14 @@ def back():
     return load_account.load_page_account()
 
 
+@app.route('/course-create', methods=['POST'])
+def create_course():
+    return course_creator.create_course()
+
+
 def main():
-    app.run('80.78.241.153', 80, debug=True)
+    # app.run('80.78.241.153', 80, debug=True)
+    app.run('127.0.0.1', 80, debug=True)
 
 
 if __name__ == '__main__':
