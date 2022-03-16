@@ -122,7 +122,7 @@ def materials_get_by_subject_level_status(subject, level, status):
     cur.execute(
         f"SELECT * FROM materials WHERE subject='{subject}' AND level='{level}' AND status='{status}'"
     )
-    data = cur.fetchall()
+    data = cur.fetchone()
     return data
 
 
@@ -142,11 +142,33 @@ def materials_add(data):
     con.commit()
 
 
-def course_add(data):
+def get_groups_by_teacher(ID):
     global con, cur
+    cur.execute(
+        f"SELECT classes FROM teachers WHERE id='{ID}'"
+    )
+    data = cur.fetchall()[0][0].split(',')
+    for i in range(len(data)):
+        cur.execute(
+            f"SELECT name FROM `groups` WHERE id='{data[i]}'"
+        )
+        data[i] = cur.fetchone()[0]
+    return data
+
+
+def course_add(data, dob_gr):
+    global con, cur
+    temp = ''
+    dob_gr = set(dob_gr)
+    for gr in dob_gr:
+        cur.execute(
+            f"SELECT id FROM `groups` WHERE name='{gr}'"
+        )
+        temp = temp + str(cur.fetchone()[0]) + ','
+    temp = temp[:-1]
     content = json.dumps(data)
     cur.execute(
         f"INSERT INTO courses (name, obj, id_groups) VALUES "
-        f"('{data['name']}', '{content}', 1)"
+        f"('{data['name']}', '{content}', '{temp}')"
     )
     con.commit()
