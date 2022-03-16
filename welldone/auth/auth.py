@@ -11,9 +11,8 @@ def sign_in():
     global con, cur, USER, ID
     mail = request.form['email']
     password = request.form['password']
-    role = request.form['role'] + 's'
     cur.execute(
-        f"SELECT * FROM `{role}`"
+        f"SELECT * FROM `users`"
         f"WHERE mail = '{mail}' AND password = '{password}'"
     )
     res = cur.fetchall()
@@ -24,5 +23,14 @@ def sign_in():
         )
     USER = res[0][2]
     ID = res[0][0]
+    if res[0][4] == 2:
+        ROLE = 'student'
+    elif res[0][4] == 1:
+        ROLE = 'teacher'
+    else:
+        ROLE = 'admin'
+    print(ROLE)
     session['ID'] = ID
+    session['name'] = USER
+    session['role'] = ROLE
     return load_account.load_page_account()

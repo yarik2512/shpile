@@ -8,7 +8,13 @@
 </head>
 <body>
 <div class="container">
-    <h1>Личный кабинет пользователя: {{ id }}</h1>
+    <h1>Личный кабинет
+        {% if role == 'student' %}
+            ученика
+        {% else %}
+            учителя
+        {% endif %}
+    </h1>
     <div class="row">
         <div class="col-4">
             Здесь аватарка пользователя
@@ -16,14 +22,16 @@
         <div class="col-8">
             <div class="row">
                 <div class="col">
-                    <p><span>Фамилия, имя:</span> {{ surname }} {{ name }}</p>
+                    <p><span>Имя:</span> {{ surname }} {{ name }}</p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <p><span>Класс:</span> {{ level }}</p>
+            {% if role == 'student' %}
+                <div class="row">
+                    <div class="col">
+                        <p><span>Класс:</span> {{ level }}</p>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
         </div>
     </div>
     <form action="/actions" method="post">

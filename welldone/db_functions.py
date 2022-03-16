@@ -146,7 +146,7 @@ def course_add(data):
     global con, cur
     content = json.dumps(data)
     cur.execute(
-        f"INSERT INTO courses ( name, obj, id_groups) VALUES "
+        f"INSERT INTO courses (name, obj, id_groups) VALUES "
         f"('{data['name']}', '{content}', 1)"
     )
     con.commit()
