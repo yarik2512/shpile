@@ -36,6 +36,15 @@ def export_tasks_by_user(user):
     return data
 
 
+def export_tests():
+    global con, cur
+    cur.execute(
+        f"SELECT * FROM tests"
+    )
+    data = cur.fetchall()
+    return data
+
+
 def export_tests_by_user(id):
     global con, cur
     cur.execute(
@@ -129,5 +138,15 @@ def materials_add(data):
     cur.execute(
         f"INSERT INTO materials (id, id_author, title, level, subject, path, status) VALUES "
         f"(NULL, '{data['author']}', '{data['name']}', '{data['level']}', '{data['subject']}', '{data['link']}', 0)"
+    )
+    con.commit()
+
+
+def course_add(data):
+    global con, cur
+    content = json.dumps(data)
+    cur.execute(
+        f"INSERT INTO courses ( name, obj, id_groups) VALUES "
+        f"('{data['name']}', '{content}', 1)"
     )
     con.commit()

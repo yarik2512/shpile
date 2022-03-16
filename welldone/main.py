@@ -51,6 +51,11 @@ def create_course():
     return course_creator.create_course()
 
 
+@app.route('/make-course', methods=['POST'])
+def make_course():
+    return course_creator.make_course()
+
+
 def main():
     # app.run('80.78.241.153', 80, debug=True)
     app.run('127.0.0.1', 80, debug=True)
