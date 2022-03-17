@@ -4,6 +4,7 @@ from materials import materials_add, materials_filter
 from auth import auth
 from test_creator import load_questions_bank, one_choice_editor
 from courses import course_creator
+from tests import create_test
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '123_123_123'
@@ -54,6 +55,11 @@ def create_course():
 @app.route('/make-course', methods=['POST'])
 def make_course():
     return course_creator.make_course()
+
+
+@app.route('/make-test', methods=['POST'])
+def make_test():
+    return create_test.create_test()
 
 
 def main():

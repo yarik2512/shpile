@@ -11,7 +11,9 @@ dob_gr = []
 groups = []
 tests = []
 materials = []
-length=0
+length = 0
+otv = []
+
 
 @app.route('/course-create')
 def create_course():
@@ -29,6 +31,7 @@ def create_course():
 def make_course():  # обработчик для формы
     global flag, length
     cur = dict()
+    a = dict()
     title = request.form['name']
     description = request.form['description']
     act = request.form['action']
@@ -45,6 +48,9 @@ def make_course():  # обработчик для формы
         flag = 'test'
     elif act.startswith('addm-'):
         temp = materials[int(act.split('-')[1])]
+        a['mat'] = temp[0]
+        otv.append(a.copy())
+        a.clear()
         cur['type'] = 'mat'
         cur['author'] = temp[1]
         cur['title'] = temp[2]
@@ -54,6 +60,9 @@ def make_course():  # обработчик для формы
         res.append(cur)
     elif act.startswith('addt-'):
         temp = tests[int(act.split('-')[1])]
+        a['test'] = temp[0]
+        otv.append(a.copy())
+        a.clear()
         cur['type'] = 'test'
         cur['author'] = temp[1]
         cur['title'] = temp[2]
@@ -64,7 +73,7 @@ def make_course():  # обработчик для формы
     elif act == 'create':
         data = dict()
         data['name'] = title
-        data['structure'] = res
+        data['structure'] = otv
         data['description'] = description
         db_functions.course_add(data, dob_gr)
         return load_account.load_page_account()
@@ -76,6 +85,7 @@ def make_course():  # обработчик для формы
         dob_gr.pop(int(act.split('-')[2]))
         length = length-1
     elif act.startswith('close-'):
+        otv.pop(int(act.split('-')[1]))
         res.pop(int(act.split('-')[1]))
     return render_template(
         'course_creator.html',
