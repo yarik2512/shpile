@@ -2,7 +2,9 @@ from flask import Flask, render_template, request, session
 from welldone import db_functions
 from welldone.materials import materials_functions
 from welldone.account import load_account
+from welldone import connections
 
+con, cur = connections.get_con_cur()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '123_123_123'
 res = []
@@ -11,7 +13,8 @@ dob_gr = []
 groups = []
 tests = []
 materials = []
-length=0
+length = 0
+
 
 @app.route('/course-create')
 def create_course():
@@ -33,11 +36,11 @@ def make_course():  # обработчик для формы
     description = request.form['description']
     act = request.form['action']
     for i in range(length):
-        print("i:"+str(i))
+        print("i:" + str(i))
         if i == len(dob_gr):
             dob_gr.append('')
-        if request.form['group-'+str(i)] != 'Выберите группу' and request.form['group-'+str(i)] != '':
-            dob_gr[i] = request.form['group-'+str(i)]
+        if request.form['group-' + str(i)] != 'Выберите группу' and request.form['group-' + str(i)] != '':
+            dob_gr[i] = request.form['group-' + str(i)]
     print(dob_gr)
     if act == 'add-material':
         flag = 'mat'
@@ -71,10 +74,10 @@ def make_course():  # обработчик для формы
     elif act == 'add-group':
         print(length)
         if length < len(groups):
-            length = length+1
+            length = length + 1
     elif act.startswith('close-gr-'):
         dob_gr.pop(int(act.split('-')[2]))
-        length = length-1
+        length = length - 1
     elif act.startswith('close-'):
         res.pop(int(act.split('-')[1]))
     return render_template(
@@ -89,3 +92,27 @@ def make_course():  # обработчик для формы
         groups=groups,
         dob_gr=dob_gr
     )
+
+
+@app.route('/course-actions')
+def course_action():
+    global con, cur
+    action = request.form['action']
+    if action.startswith('show'):
+        id = action.split('-')[1]
+        course = db_functions.course_get_obj_by_id(id)
+        if len(course) == 0:
+            return render_template(
+                "404.html"
+            )
+        course_tests = course['tests']
+        course_materials = course['materials']
+        for i in range(len(tests)):
+            course_tests[i][1] = db_functions.user_get_name_by_id(int(course_tests[i][1]))
+        for i in range(len(materials)):
+            course_materials[i][1] = db_functions.user_get_name_by_id(int(course_materials[i][1]))
+        return render_template(
+            "course.html",
+            materials=course_materials,
+            tests=course_tests
+        )

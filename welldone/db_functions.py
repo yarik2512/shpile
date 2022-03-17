@@ -4,6 +4,17 @@ import json
 con, cur = get_con_cur()
 
 
+def user_get_name_by_id(id):
+    global con, cur
+    cur.execute(
+        f"SELECT name FROM `users` WHERE id='{id}'"
+    )
+    res = cur.fetchall()
+    if len(res) == 0:
+        return ''
+    return res[0][0]
+
+
 def get_task_by_id(id):
     global con, cur
     cur.execute(
@@ -122,7 +133,7 @@ def materials_get_by_subject_level_status(subject, level, status):
     cur.execute(
         f"SELECT * FROM materials WHERE subject='{subject}' AND level='{level}' AND status='{status}'"
     )
-    data = cur.fetchone()
+    data = cur.fetchall()
     return data
 
 
@@ -142,33 +153,22 @@ def materials_add(data):
     con.commit()
 
 
-def get_groups_by_teacher(ID):
+def course_add(data):
     global con, cur
-    cur.execute(
-        f"SELECT classes FROM teachers WHERE id='{ID}'"
-    )
-    data = cur.fetchall()[0][0].split(',')
-    for i in range(len(data)):
-        cur.execute(
-            f"SELECT name FROM `groups` WHERE id='{data[i]}'"
-        )
-        data[i] = cur.fetchone()[0]
-    return data
-
-
-def course_add(data, dob_gr):
-    global con, cur
-    temp = ''
-    dob_gr = set(dob_gr)
-    for gr in dob_gr:
-        cur.execute(
-            f"SELECT id FROM `groups` WHERE name='{gr}'"
-        )
-        temp = temp + str(cur.fetchone()[0]) + ','
-    temp = temp[:-1]
     content = json.dumps(data)
     cur.execute(
         f"INSERT INTO courses (name, obj, id_groups) VALUES "
-        f"('{data['name']}', '{content}', '{temp}')"
+        f"('{data['name']}', '{content}', 1)"
     )
     con.commit()
+
+
+def course_get_obj_by_id(id):
+    global con, cur
+    cur.execute(
+        f"SELECT obj FROM courses WHERE id={id}"
+    )
+    res = cur.fetchall()
+    if len(res) == 0:
+        return {}
+    return json.loads(res[0][0])

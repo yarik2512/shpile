@@ -11,7 +11,34 @@
     <form action="/back" method="post">
         <button class="btn btn-dark" style="position:absolute;top:10px;right:10px;">Назад</button>
     </form>
-
+    <div class="row mt-3">
+        <div class="col">
+            <h2>Материалы</h2>
+            <table class="table table-hover align-middle">
+                {% for material in materials %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ material[2] }}</td>
+                        <td>{{ material[1] }}</td>
+                        <td><a href="{{ material[5] }}" target="_blank" class="btn btn-light">Посмотреть</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col">
+            <h2>Тесты</h2>
+            <table class="table table-hover align-middle">
+                {% for test in tests %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ test[2] }}</td>
+                        <td>{{ test[1] }}</td>
+                        <td><button name="action" value="{{ test[0] }}" class="btn btn-light">Решать</button></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
 </div>
 </body>
 </html>
