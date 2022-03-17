@@ -15,13 +15,12 @@ length = 0
 otv = []
 
 
-
 @app.route('/course-create')
 def create_course():
     global materials, groups, tests
     materials = materials_functions.change_subject_to_ru(db_functions.materials_get_by_status(1))
     tests = db_functions.export_tests()
-    groups = db_functions.get_groups_by_teacher(session.get('ID'))
+    groups = db_functions.groups_get_by_teacher_id(session.get('ID'))
     return render_template(
         'course_creator.html',
         length=0
@@ -84,7 +83,7 @@ def make_course():  # обработчик для формы
     elif act == 'add-group':
         print(length)
         if length < len(groups):
-            length = length+1
+            length = length + 1
     elif act.startswith('close-gr-'):
         dob_gr.pop(int(act.split('-')[2]))
         length = length - 1
@@ -116,14 +115,30 @@ def course_action():
             return render_template(
                 "404.html"
             )
-        course_tests = course['tests']
-        course_materials = course['materials']
-        for i in range(len(tests)):
-            course_tests[i][1] = db_functions.user_get_name_by_id(int(course_tests[i][1]))
-        for i in range(len(materials)):
-            course_materials[i][1] = db_functions.user_get_name_by_id(int(course_materials[i][1]))
+        course_tests = list()
+        course_materials = list()
+        name = course['name']
+        description = course['description']
+        for obj in course['structure']:
+            if list(obj.keys())[0] == 'test':
+                id = obj['test']
+                tmp = dict()
+                tmp['id'] = id
+                tmp['title'] = db_functions.test_get_name_by_id(id)
+                tmp['author'] = db_functions.test_get_author_by_id(id)
+                course_tests.append(tmp)
+            else:
+                id = obj['mat']
+                tmp = dict()
+                tmp['id'] = id
+                tmp['title'] = db_functions.material_get_name_by_id(id)
+                tmp['author'] = db_functions.material_get_author_by_id(id)
+                tmp['path'] = db_functions.material_get_path_by_id(id)
+                course_materials.append(tmp)
         return render_template(
             "course.html",
             materials=course_materials,
-            tests=course_tests
+            tests=course_tests,
+            name=name,
+            description=description
         )

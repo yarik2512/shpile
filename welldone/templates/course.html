@@ -11,6 +11,10 @@
     <form action="/back" method="post">
         <button class="btn btn-dark" style="position:absolute;top:10px;right:10px;">Назад</button>
     </form>
+    <div class="mt-3">
+        <h2>Курс: {{ name }}</h2>
+        <p>{{ description }}</p>
+    </div>
     <div class="row mt-3">
         <div class="col">
             <h2>Материалы</h2>
@@ -18,9 +22,9 @@
                 {% for material in materials %}
                     <tr>
                         <td>{{ loop.index }}</td>
-                        <td>{{ material[2] }}</td>
-                        <td>{{ material[1] }}</td>
-                        <td><a href="{{ material[5] }}" target="_blank" class="btn btn-light">Посмотреть</a></td>
+                        <td>{{ material['title'] }}</td>
+                        <td>{{ material['author'] }}</td>
+                        <td><a href="{{ material['path'] }}" target="_blank" class="btn btn-light">Посмотреть</a></td>
                     </tr>
                 {% endfor %}
             </table>
@@ -31,9 +35,9 @@
                 {% for test in tests %}
                     <tr>
                         <td>{{ loop.index }}</td>
-                        <td>{{ test[2] }}</td>
-                        <td>{{ test[1] }}</td>
-                        <td><button name="action" value="{{ test[0] }}" class="btn btn-light">Решать</button></td>
+                        <td>{{ test['title'] }}</td>
+                        <td>{{ test['author'] }}</td>
+                        <td><button name="action" value="{{ test['id'] }}" class="btn btn-light">Решать</button></td>
                     </tr>
                 {% endfor %}
             </table>
