@@ -89,6 +89,15 @@ def materials_add(data):
     global con, cur
     cur.execute(
         f"INSERT INTO materials (id, id_author, title, level, subject, path, status) VALUES "
+        f"(NULL, '{data['author']}', '{data['name']}', '{data['level']}', '{data['subject']}', '{data['link']}', 0)"
+    )
+    con.commit()
+
+
+def materials_add(data):
+    global con, cur
+    cur.execute(
+        f"INSERT INTO materials (id, id_author, title, level, subject, path, status) VALUES "
         f"(NULL, '{data['author']}', '{data['name']}', '{data['level']}', '{data['discipline']}', '{data['link']}', 0)"
     )
     con.commit()
