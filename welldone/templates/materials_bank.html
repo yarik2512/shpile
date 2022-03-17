@@ -12,23 +12,31 @@
         <button class="btn btn-dark" style="position:absolute;top:10px;right:10px;">Назад</button>
     </form>
     <form action="/materials-filter" class="mt-3" method="post">
-        <select name="subject" id="subject-select" class="form-select">
-            <option value="all" selected>Все</option>
-            <option value="alg">Алгебра</option>
-            <option value="geom">Геометрия</option>
-            <option value="soc">Обществознание</option>
-            <option value="inf">Информатика</option>
-        </select>
-        <select name="level" id="level-select" class="form-select">
-            <option value="all" selected>Все</option>
-            <option value="5-9">5-9</option>
-            <option value="10-11">10-11</option>
-        </select>
-        <button name="confirm" class="btn btn-primary">Применить</button>
-        <button name="clear" class="btn btn-danger">Очистить</button>
+        <div class="row">
+            <div class="col">
+                <select name="subject" id="subject-select" class="form-select">
+                    <option value="all" {{  'selected' if selected['subject-all'] else '' }}>Все</option>
+                    <option value="alg" {{  'selected' if selected['alg'] else '' }}>Алгебра</option>
+                    <option value="geom" {{  'selected' if selected['geom'] else '' }}>Геометрия</option>
+                    <option value="soc" {{  'selected' if selected['soc'] else '' }}>Обществознание</option>
+                    <option value="inf" {{  'selected' if selected['inf'] else '' }}>Информатика</option>
+                </select>
+            </div>
+            <div class="col">
+                <select name="level" id="level-select" class="form-select">
+                    <option value="all" {{  'selected' if selected['level-all'] else '' }}>Все</option>
+                    <option value="5-9" {{  'selected' if selected['5-9'] else '' }}>5-9</option>
+                    <option value="10-11" {{  'selected' if selected['10-11'] else '' }}>10-11</option>
+                </select>
+            </div>
+        </div>
+        <div class="mt-3">
+            <button name="confirm" class="btn btn-primary">Применить</button>
+            <button name="clear" class="btn btn-danger">Очистить</button>
+        </div>
     </form>
     <div class="mt-3">
-        <table class="table">
+        <table class="table align-middle table-hover">
             {% for material in materials %}
                 <tr>
                     <td>{{ material[2] }}</td>

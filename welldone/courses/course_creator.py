@@ -98,6 +98,7 @@ def make_course():  # обработчик для формы
 def course_action():
     global con, cur
     action = request.form['action']
+    print(action)
     if action.startswith('show'):
         id = action.split('-')[1]
         course = db_functions.course_get_obj_by_id(id)

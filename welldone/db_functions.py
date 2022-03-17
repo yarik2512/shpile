@@ -7,7 +7,62 @@ con, cur = get_con_cur()
 def user_get_name_by_id(id):
     global con, cur
     cur.execute(
-        f"SELECT name FROM `users` WHERE id='{id}'"
+        f"SELECT name FROM users WHERE id={id}"
+    )
+    res = cur.fetchall()
+    if len(res) == 0:
+        return ''
+    return res[0][0]
+
+
+def student_get_groups_by_id(id):
+    global con, cur
+    cur.execute(
+        f"SELECT id_groups FROM students WHERE id={id}"
+    )
+    res = cur.fetchall()
+    if len(res) == 0:
+        return ''
+    return res[0][0].split(';')
+
+
+def student_get_courses_by_id(id):
+    global con, cur
+    cur.execute(
+        f"SELECT id_courses FROM `students` WHERE id='{id}'"
+    )
+    res = cur.fetchall()
+    if len(res) == 0:
+        return []
+    return res[0][0].split(';')
+
+
+def teacher_get_courses_by_id(id):
+    global con, cur
+    cur.execute(
+        f"SELECT id_courses FROM `teachers` WHERE id='{id}'"
+    )
+    res = cur.fetchall()
+    if len(res) == 0:
+        return []
+    return res[0][0].split(';')
+
+
+def group_get_name_by_id(id):
+    global con, cur
+    cur.execute(
+        f"SELECT name FROM `groups` WHERE id={id}"
+    )
+    res = cur.fetchall()
+    if len(res) == 0:
+        return ''
+    return res[0][0]
+
+
+def course_get_name_by_id(id):
+    global con, cur
+    cur.execute(
+        f"SELECT name FROM `courses` WHERE id='{id}'"
     )
     res = cur.fetchall()
     if len(res) == 0:
@@ -26,11 +81,11 @@ def get_task_by_id(id):
 
 
 def new_task(user, obj):
+    global con, cur
     author = user
     typ = obj['type']
     question = obj['question']
     content = json.dumps(obj)
-    global con, cur
     cur.execute(
         f"INSERT INTO tasks (id, author, type, question, content) "
         f"VALUES (NULL, '{author}', '{typ}', '{question}','{content}')"
