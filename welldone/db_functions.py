@@ -142,14 +142,6 @@ def materials_add(data):
     con.commit()
 
 
-def get_tasks_by_teacher(ID):
-    global con, cur
-    cur.execute(
-        f"SELECT * FROM tasks WHERE author='{ID}'"
-    )
-    return cur.fetchall()
-
-
 def get_groups_by_teacher(ID):
     global con, cur
     cur.execute(
@@ -178,14 +170,5 @@ def course_add(data, dob_gr):
     cur.execute(
         f"INSERT INTO courses (name, obj, id_groups) VALUES "
         f"('{data['name']}', '{content}', '{temp}')"
-    )
-    con.commit()
-
-
-def test_add(data):
-    global con, cur
-    cur.execute(
-        f"INSERT INTO tests (author, test_title, level, sub, obj) VALUES "
-        f"('{data['author']}', '{data['name']}', '{data['level']}', '{data['subject']}', '{data['link']}', 0)"
     )
     con.commit()

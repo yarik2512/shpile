@@ -29,7 +29,6 @@ def sign_in():
         ROLE = 'teacher'
     else:
         ROLE = 'admin'
-    print(ROLE)
     session['ID'] = ID
     session['name'] = USER
     session['role'] = ROLE

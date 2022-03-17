@@ -57,6 +57,11 @@ def make_course():
     return course_creator.make_course()
 
 
+@app.route('/course-actions', methods=['POST'])
+def course_action():
+    return course_creator.course_action()
+
+
 @app.route('/make-test', methods=['POST'])
 def make_test():
     return create_test.create_test()
