@@ -4,6 +4,7 @@ import json
 con, cur = get_con_cur()
 
 
+# functions with USERS
 def user_get_name_by_id(id):
     global con, cur
     cur.execute(
@@ -15,6 +16,7 @@ def user_get_name_by_id(id):
     return res[0][0]
 
 
+# functions with STUDENTS
 def student_get_groups_by_id(id):
     global con, cur
     cur.execute(
@@ -37,6 +39,7 @@ def student_get_courses_by_id(id):
     return res[0][0].split(';')
 
 
+# functions with TEACHERS
 def teacher_get_courses_by_id(id):
     global con, cur
     cur.execute(
@@ -48,6 +51,7 @@ def teacher_get_courses_by_id(id):
     return res[0][0].split(';')
 
 
+# functions with GROUPS
 def group_get_name_by_id(id):
     global con, cur
     cur.execute(
@@ -59,18 +63,8 @@ def group_get_name_by_id(id):
     return res[0][0]
 
 
-def course_get_name_by_id(id):
-    global con, cur
-    cur.execute(
-        f"SELECT name FROM `courses` WHERE id='{id}'"
-    )
-    res = cur.fetchall()
-    if len(res) == 0:
-        return ''
-    return res[0][0]
-
-
-def get_task_by_id(id):
+# functions with TASKS
+def task_get_by_id(id):
     global con, cur
     cur.execute(
         f"SELECT * FROM tasks WHERE id={id}"
@@ -102,6 +96,7 @@ def export_tasks_by_user(user):
     return data
 
 
+# functions with TESTS
 def export_tests():
     global con, cur
     cur.execute(
@@ -120,6 +115,7 @@ def export_tests_by_user(id):
     return data
 
 
+# functions with MATERIALS
 def materials_get_by_author(id_author):
     global con, cur
     cur.execute(
@@ -208,6 +204,7 @@ def materials_add(data):
     con.commit()
 
 
+# functions with COURSES
 def course_add(data):
     global con, cur
     content = json.dumps(data)
@@ -227,3 +224,14 @@ def course_get_obj_by_id(id):
     if len(res) == 0:
         return {}
     return json.loads(res[0][0])
+
+
+def course_get_name_by_id(id):
+    global con, cur
+    cur.execute(
+        f"SELECT name FROM `courses` WHERE id='{id}'"
+    )
+    res = cur.fetchall()
+    if len(res) == 0:
+        return ''
+    return res[0][0]

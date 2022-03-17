@@ -2,9 +2,7 @@ from flask import Flask, render_template, request, session
 from welldone import db_functions
 from welldone.materials import materials_functions
 from welldone.account import load_account
-from welldone import connections
 
-con, cur = connections.get_con_cur()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '123_123_123'
 res = []
@@ -96,7 +94,6 @@ def make_course():  # обработчик для формы
 
 @app.route('/course-actions')
 def course_action():
-    global con, cur
     action = request.form['action']
     print(action)
     if action.startswith('show'):

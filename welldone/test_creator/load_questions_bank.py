@@ -42,6 +42,6 @@ def action_question_bank():
     else:
         cmd, index = req.split('-')
         if cmd == 'add':
-            TEST.append(db_functions.get_task_by_id(int(index)))
+            TEST.append(db_functions.task_get_by_id(int(index)))
 
     return main_load_questions_bank()
