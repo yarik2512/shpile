@@ -31,7 +31,6 @@ def main_load_questions_bank():
     )
 
 
-@app.route('/question-bank', methods=['POST'])
 def action_question_bank():
     global CREATE_TEST_FLAG
     req = request.form['action']

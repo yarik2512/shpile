@@ -1,4 +1,4 @@
-from welldone.main import get_con_cur
+from welldone.connections import get_con_cur
 import json
 
 con, cur = get_con_cur()

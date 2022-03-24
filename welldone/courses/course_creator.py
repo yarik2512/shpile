@@ -15,7 +15,6 @@ length = 0
 otv = []
 
 
-@app.route('/course-create')
 def create_course():
     global materials, groups, tests
     materials = materials_functions.change_subject_to_ru(db_functions.materials_get_by_status(1))
@@ -27,8 +26,7 @@ def create_course():
     )
 
 
-@app.route('/make-course', methods=['POST'])
-def make_course():  # обработчик для формы
+def make_course():
     global flag, length
     cur = dict()
     a = dict()
@@ -101,7 +99,6 @@ def make_course():  # обработчик для формы
     )
 
 
-@app.route('/course-actions')
 def course_action():
     action = request.form['action']
     print(action)

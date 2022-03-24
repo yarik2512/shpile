@@ -14,7 +14,6 @@ def engine():
     )
 
 
-@app.route('/add-material', methods=['POST'])
 def add_material():
     ID = session.get('ID')
     data = dict()
@@ -24,7 +23,6 @@ def add_material():
     data['subject'] = request.form['subject']
     data['file'] = request.files['file']
     data['link'] = 'materials/' + data['level'] + '/' + data['subject'] + '/' + secure_filename(data['file'].filename)
-    # link_server.add_file(data['file'], '/welldone/' + data['link'])
     data['file'].save(os.path.join(data['link']))
     db_functions.materials_add(data)
     materials = db_functions.materials_get_by_author(ID)
