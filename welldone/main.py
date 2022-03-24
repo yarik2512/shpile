@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session
+from flask import Flask, render_template, send_file
 from account import load_account
 from materials import materials_add, materials_filter
 from auth import auth
@@ -67,9 +67,15 @@ def make_test():
     return create_test.create_test()
 
 
+@app.route('/materials/<path:path>', methods=['GET'])
+def get_material(path):
+    print(path)
+    return send_file("materials/"+path, as_attachment=True)
+
+
 def main():
-    # app.run('80.78.241.153', 80, debug=True)
-    app.run('127.0.0.1', 80, debug=True)
+    app.run('80.78.241.153', 80, debug=True)
+    # app.run('127.0.0.1', 80, debug=True)
 
 
 if __name__ == '__main__':

@@ -36,12 +36,10 @@ def make_course():  # обработчик для формы
     description = request.form['description']
     act = request.form['action']
     for i in range(length):
-        print("i:" + str(i))
         if i == len(dob_gr):
             dob_gr.append('')
         if request.form['group-' + str(i)] != 'Выберите группу' and request.form['group-' + str(i)] != '':
             dob_gr[i] = request.form['group-' + str(i)]
-    print(dob_gr)
     if act == 'add-material':
         flag = 'mat'
     elif act == 'add-test':
@@ -81,7 +79,6 @@ def make_course():  # обработчик для формы
         db_functions.course_add(data, dob_gr)
         return load_account.load_page_account()
     elif act == 'add-group':
-        print(length)
         if length < len(groups):
             length = length + 1
     elif act.startswith('close-gr-'):
