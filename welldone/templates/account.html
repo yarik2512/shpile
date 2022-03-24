@@ -16,13 +16,10 @@
         {% endif %}
     </h1>
     <div class="row">
-        <div class="col-4">
-            Здесь аватарка пользователя
-        </div>
         <div class="col-8">
             <div class="row">
                 <div class="col">
-                    <p><span>Имя:</span> {{ surname }} {{ name }}</p>
+                    <p>{{ surname }} {{ name }} {{ secondname }}</p>
                 </div>
             </div>
             {% if role == 'student' %}

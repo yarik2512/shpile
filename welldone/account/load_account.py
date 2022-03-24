@@ -69,7 +69,6 @@ def make_some_action():
 
 def load_page_account():
     ID, role, surname, name, secondname, level, courses = get_info()
-    print(surname, name)
     return render_template(
         'account.html',
         id=ID,

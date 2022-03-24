@@ -1,8 +1,8 @@
 from flask import Flask, request, render_template, session
-from welldone import connections
 from welldone.account import load_account
+from welldone.main import get_con_cur
 
-con, cur = connections.get_con_cur()
+con, cur = get_con_cur()
 USER = None
 ID = None
 
