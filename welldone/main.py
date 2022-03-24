@@ -8,10 +8,6 @@ from tests import create_test
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '123_123_123'
-app.config['MYSQL_DATABASE_HOST'] = '37.140.192.174'
-app.config['MYSQL_DATABASE_USER'] = 'u1490660_default'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'Ds3Nb2d5wYj6UW28'
-app.config['MYSQL_DATABASE_DB'] = 'u1490660_default'
 
 
 @app.route('/')
