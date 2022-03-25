@@ -151,6 +151,15 @@ def test_get_author_by_id(id):
     return user_get_name_by_id(res[0][0])
 
 
+def tests_add(data):
+    global con, cur
+    cur.execute(
+        f"INSERT INTO tests ( author, test_title, level, sub, obj) VALUES "
+        f"('{data['author']}', '{data['name']}', '{data['level']}', '{data['sub']}', '{data['tasks']}')"
+    )
+    con.commit()
+
+
 # functions with MATERIALS
 def material_get_name_by_id(id):
     global con, cur
@@ -312,3 +321,6 @@ def course_get_name_by_id(id):
     if len(res) == 0:
         return ''
     return res[0][0]
+
+
+

@@ -13,9 +13,9 @@ id = []
 @app.route('/test-create')
 def create_test():
     global tasks
-    tasks = db_functions.get_tasks_by_teacher(session.get('ID'))
+    tasks = db_functions.export_tasks_by_user(session.get('ID'))
     return render_template(
-        'test_creator.html',
+        'test-creator.html',
     )
 
 
@@ -41,13 +41,13 @@ def make_test():  # обработчик для формы
         data['tasks'] = id
         data['sub'] = request.form['sub']
         data['level'] = request.form['level']
-        db_functions.test_add(data)
+        db_functions.tests_add(data)
         return load_account.load_page_account()
     elif act.startswith('close-'):
         id.pop(int(act.split('-')[1]))
         res.pop(int(act.split('-')[1]))
     return render_template(
-        'test_creator.html',
+        'test-creator.html',
         dob=res,
         tasks=tasks,
         title=title,

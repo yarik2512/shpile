@@ -64,7 +64,7 @@ def course_action():
 
 @app.route('/make-test', methods=['POST'])
 def make_test():
-    return create_test.create_test()
+    return create_test.make_test()
 
 
 @app.route('/materials/<path:path>', methods=['GET'])

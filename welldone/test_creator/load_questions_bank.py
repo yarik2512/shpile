@@ -1,5 +1,6 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, session
 from welldone import db_functions
+from welldone.tests import create_test
 
 app = Flask(__name__)
 
@@ -8,7 +9,7 @@ TEST = []
 BANK_OF_QUESTIONS = None
 
 
-def show_question_by_user(USER=15):
+def show_question_by_user(USER):
     data = []
     for element in db_functions.export_tasks_by_user(USER):
         smth = dict()
@@ -19,13 +20,13 @@ def show_question_by_user(USER=15):
     return data
 
 
-@app.route('/')
 def main_load_questions_bank():
     global CREATE_TEST_FLAG, BANK_OF_QUESTIONS
-    BANK_OF_QUESTIONS = show_question_by_user()
+    BANK_OF_QUESTIONS = show_question_by_user(session.get('ID'))
+    if CREATE_TEST_FLAG:
+        return create_test.create_test()
     return render_template(
         'test_creator_questions_bank.html',
-        createTestFlag=CREATE_TEST_FLAG,
         data=BANK_OF_QUESTIONS,
         length=len(BANK_OF_QUESTIONS)
     )
