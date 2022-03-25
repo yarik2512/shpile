@@ -16,6 +16,7 @@ def create_test():
     tasks = db_functions.export_tasks_by_user(session.get('ID'))
     return render_template(
         'test-creator.html',
+        tasks=tasks
     )
 
 
@@ -23,16 +24,16 @@ def create_test():
 def make_test():  # обработчик для формы
     global id, tasks
     cur = dict()
+    tasks = db_functions.export_tasks_by_user(session.get('ID'))
     title = request.form['name']
     act = request.form['action']
     if act.startswith('add-'):
         temp = tasks[int(act.split('-')[1])]
         id.append(temp[0])
         cur['author'] = temp[1]
-        cur['title'] = temp[2]
-        cur['level'] = temp[3]
-        cur['sub'] = temp[4]
-        cur['path'] = temp[5]
+        cur['level'] = temp[2]
+        cur['sub'] = temp[3]
+        cur['path'] = temp[4]
         res.append(cur)
     elif act == 'create':
         data = dict()
