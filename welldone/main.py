@@ -73,6 +73,11 @@ def get_material(path):
     return send_file("materials/" + path, as_attachment=True)
 
 
+@app.route('/editor_one_choice', methods=['POST'])
+def editor_one_choice():
+    return one_choice_editor.create_one_choice_question()
+
+
 def main():
     app.run('80.78.241.153', 80, debug=True)
     # app.run('127.0.0.1', 80, debug=True)

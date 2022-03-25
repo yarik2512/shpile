@@ -41,7 +41,10 @@ def create_one_choice_question():
         item['type'] = 'multi' if weight_count > 1 else 'one'
 
         if req == 'add':
-            k = int(request.form['add-amount'])
+            if request.form['add-amount'] != '':
+                k = int(request.form['add-amount'])
+            else:
+                k = 0
             item['answers'] = item['answers'] + [["", 0] for _ in range(k)]
             return upload_page()
 
