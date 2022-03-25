@@ -68,7 +68,7 @@ def create_one_choice_question():
 
 def load_question_bank():
     USER = session.get('ID')
-    db_functions.new_task(USER, item)
+    # db_functions.new_task(USER, item)
     temp = db_functions.export_tasks_by_user(USER)
     data = []
     for element in temp:
